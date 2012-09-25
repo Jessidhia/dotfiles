@@ -1,2 +1,2 @@
-export HISTFILE="/.zsh/history"
+export HISTFILE="$HOME/.zsh/history"
 
