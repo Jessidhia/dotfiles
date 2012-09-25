@@ -31,8 +31,6 @@ ZSH_THEME="af-magic"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(rbenv brew git bundler ruby gem rails3 osx perl cpanm github screen ssh-agent sublime)
 
-for rc in $HOME/.zsh/rc-pre/*; do . "$rc"; done
-
 source $ZSH/oh-my-zsh.sh
 
 for rc in $HOME/.zsh/rc/*; do . "$rc"; done
