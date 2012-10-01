@@ -6,8 +6,6 @@ use File::Which;
 
 exit 0 unless @ARGV;
 
-my $path_cmd = $^O eq "cygwin" ? "cygpath" : "winepath";
-
 my $exe = shift;
 
 $exe = which($exe) unless -f $exe;
@@ -17,7 +15,13 @@ unless (-f $exe) {
     exit -1;
 }
 
+my $path_cmd = "cygpath";
 my @args = ($exe);
+
+if ($^O ne "cygwin") {
+    $path_cmd = "winepath";
+    unshift @args, "wine"
+}
 
 for my $f (@ARGV) {
     if ($f eq '/dev/null') { # cygpath would return \\.\NUL, which isn't wrong,
