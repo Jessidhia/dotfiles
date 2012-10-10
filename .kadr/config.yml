@@ -1,0 +1,107 @@
+---
+# KADR will look for this file at ~/.kadr/config.yml
+# Commented out options show their defaults. The others are required.
+
+# Timeout for cached file information in seconds.
+# cache_timeout_file: 1036800 # 12 days
+
+# Timeouts for cached mylist information in seconds.
+# A separate timeout can be set for anime which have unwatched episodes.
+# cache_timeout_mylist_unwatched: 7200 # 2 hours
+# cache_timeout_mylist_watched: 1036800 # 12 days
+
+# Collation to use for filenames.
+# A purely aesthetic option that only affects processing order.
+# It has a small startup time penalty when enabled.
+#
+# Options:
+#   none:      No sorting
+#   ascii:     Case-sensitive alphabetical
+#   ascii-i:   Case-insensitive alphabetical
+#   auto:      unicode-i if Unicode::Collate is installed, otherwise ascii-i
+#   unicode-i: Case-insensitive multi-lingual aware
+#
+# collator: auto
+
+# Database where state information is kept.
+# database: ~/.kadr/db
+
+# A list of directories to index.
+dirs_to_scan:
+  - /cygdrive/f/HexChat/downloads/done
+  - /cygdrive/f/Anime/Unwatched
+  - /cygdrive/f/Anime/Watched
+
+# Empty directories are left behind when moving things.
+# By default, all empty directories in dirs_to_scan are removed.
+# delete_empty_dirs_in_scanned: 1
+
+# Where to place unwatched episodes when found in a directory for watched episodes.
+dir_to_put_unwatched_eps: /cygdrive/f/Anime/Unwatched
+
+# Where to place watched episodes when found in a directory for unwatched episodes.
+dir_to_put_watched_eps: /cygdrive/f/Anime/Watched
+
+# The entire state database is loaded into memory on startup by default.
+# This can be much faster when no AniDB queries are needed.
+# Disable if the memory usage is more important than speed.
+# load_local_cache_into_memory: 1
+
+# The template for naming your files.
+# See http://template-toolkit.org/docs/manual/Syntax.html for how to use the
+# templating language.
+#
+# TODO: documentation of the available fields
+#
+file_naming_scheme: |
+  [% anime_type %]/
+  [% IF anime_type == 'TV Series' %]
+  [% PERL %]
+    my $year = $stash->get('anime_year');
+    if ($year !~ /-/) {
+      $year = "Ongoing";
+    } else {
+      $year =~ s/-\d+//g;
+    }
+    print "$year/";
+  [% END %]
+  [% END %]
+  [% anime_romaji_name %]/
+  [% anime_kanji_name %]
+  [% IF is_primary_episode %]
+  [% IF file_version > 1 %] v[% file_version %][% END %]
+  [% ELSE %]
+   - [% episode_number %][% IF file_version > 1 %]v[% file_version %][% END %]
+  [% PERL %]
+    my $epno    = $stash->get('episode_number');
+    my $epcount = $stash->get('anime_total_episodes');
+    if ($epno !~ /[COST]/ && $epcount ne '?' && $epcount > 1) {
+      print "∕$epcount";
+    }
+  [% END %]
+   - [% episode_kanji_name %]
+  [% END %]
+  [% UNLESS group_short_name == 'raw' %] [[% group_short_name %]][% END %]
+  [% IF video_resolution != '0x0' %][[% source %] [% video_resolution %] [% video_codec %] [% audio_codec %]][% END %]
+  .[%file_type%]
+
+# Timeout for AniDB queries.
+# query_timeout: 15.0
+
+# Hashing progress display can be disabled. Not really useful anymore.
+# show_hashing_progress: 1
+
+# Enable to set the state of missing file to "deleted" on AniDB.
+update_anidb_records_for_deleted_files: 1
+
+# A list of directories where unwatched episodes are allowed to be.
+valid_dirs_for_unwatched_eps:
+  - /cygdrive/f/Anime/Unwatched
+
+# A list of directories where watched episodes are allowed to be.
+valid_dirs_for_watched_eps:
+  - /cygdrive/f/Anime/Watched
+
+# Replace characters windows can't display.
+# This is set by default when running on windows.
+windows_compatible_filenames: 1

@@ -2,4 +2,10 @@
 	name = Kovensky
 	email = diogomfranco@gmail.com
 [color]
-	ui = true
+	ui = auto
+[sendemail]
+	smtpserver = smtp.gmail.com
+	smtpserverport = 587
+	smtpencryption = tls
+	smtpuser = diogomfranco@gmail.com
+	suppressfrom = 1
