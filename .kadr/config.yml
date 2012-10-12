@@ -28,19 +28,19 @@
 
 # A list of directories to index.
 dirs_to_scan:
-  - /cygdrive/f/HexChat/downloads/done
-  - /cygdrive/f/Anime/Unwatched
-  - /cygdrive/f/Anime/Watched
+  - /Volumes/Yuuhi/HexChat/downloads/done
+  - /Volumes/Yuuhi/Anime/Unwatched
+  - /Volumes/Yuuhi/Anime/Watched
 
 # Empty directories are left behind when moving things.
 # By default, all empty directories in dirs_to_scan are removed.
 # delete_empty_dirs_in_scanned: 1
 
 # Where to place unwatched episodes when found in a directory for watched episodes.
-dir_to_put_unwatched_eps: /cygdrive/f/Anime/Unwatched
+dir_to_put_unwatched_eps: /Volumes/Yuuhi/Anime/Unwatched
 
 # Where to place watched episodes when found in a directory for unwatched episodes.
-dir_to_put_watched_eps: /cygdrive/f/Anime/Watched
+dir_to_put_watched_eps: /Volumes/Yuuhi/Anime/Watched
 
 # The entire state database is loaded into memory on startup by default.
 # This can be much faster when no AniDB queries are needed.
@@ -96,11 +96,11 @@ update_anidb_records_for_deleted_files: 1
 
 # A list of directories where unwatched episodes are allowed to be.
 valid_dirs_for_unwatched_eps:
-  - /cygdrive/f/Anime/Unwatched
+  - /Volumes/Yuuhi/Anime/Unwatched
 
 # A list of directories where watched episodes are allowed to be.
 valid_dirs_for_watched_eps:
-  - /cygdrive/f/Anime/Watched
+  - /Volumes/Yuuhi/Anime/Watched
 
 # Replace characters windows can't display.
 # This is set by default when running on windows.
