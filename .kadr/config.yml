@@ -55,31 +55,21 @@ dir_to_put_watched_eps: /Volumes/Yuuhi/Anime/Watched
 #
 file_naming_scheme: |
   [% anime_type %]/
-  [% IF anime_type == 'TV Series' %]
-  [% PERL %]
-    my $year = $stash->get('anime_year');
-    if ($year !~ /-/) {
-      $year = "Ongoing";
-    } else {
-      $year =~ s/-\d+//g;
-    }
-    print "$year/";
-  [% END %]
-  [% END %]
+  [% IF anime_type == 'TV Series' %][% anime_season_year %]q[% anime_season_quarter %]/[% END %]
   [% anime_romaji_name %]/
   [% anime_kanji_name %]
   [% IF is_primary_episode %]
   [% IF file_version > 1 %] v[% file_version %][% END %]
   [% ELSE %]
-   - [% episode_number %][% IF file_version > 1 %]v[% file_version %][% END %]
-  [% PERL %]
-    my $epno    = $stash->get('episode_number');
+   - [% episode.number %][% IF file_version > 1 %]v[% file_version %][% END %]
+  [% RAWPERL %]
+    my $epno    = $stash->get('episode')->{number};
     my $epcount = $stash->get('anime_total_episodes');
-    if ($epno !~ /[COST]/ && $epcount ne '?' && $epcount > 1) {
-      print "∕$epcount";
+    if ($epno !~ /[PCOST]/ && $epcount ne '?' && $epcount > 1) {
+      $output .= "∕$epcount";
     }
   [% END %]
-   - [% episode_kanji_name %]
+   - [% episode.kanji_name %]
   [% END %]
   [% UNLESS group_short_name == 'raw' %] [[% group_short_name %]][% END %]
   [% IF video_resolution != '0x0' %][[% source %] [% video_resolution %] [% video_codec %] [% audio_codec %]][% END %]
