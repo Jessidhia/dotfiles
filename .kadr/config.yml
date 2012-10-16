@@ -48,32 +48,39 @@ dir_to_put_watched_eps: /Volumes/Yuuhi/Anime/Watched
 # load_local_cache_into_memory: 1
 
 # The template for naming your files.
-# See http://template-toolkit.org/docs/manual/Syntax.html for how to use the
-# templating language.
+# See https://metacpan.org/module/Text::Xslate::Syntax::Kolon for how to use
+# the templating language.
 #
 # TODO: documentation of the available fields
 #
 file_naming_scheme: |
-  [% anime_type %]/
-  [% IF anime_type == 'TV Series' %][% anime_season_year %]q[% anime_season_quarter %]/[% END %]
-  [% anime_romaji_name %]/
-  [% anime_kanji_name %]
-  [% IF is_primary_episode %]
-  [% IF file_version > 1 %] v[% file_version %][% END %]
-  [% ELSE %]
-   - [% episode.number %][% IF file_version > 1 %]v[% file_version %][% END %]
-  [% RAWPERL %]
-    my $epno    = $stash->get('episode')->{number};
-    my $epcount = $stash->get('anime_total_episodes');
-    if ($epno !~ /[PCOST]/ && $epcount ne '?' && $epcount > 1) {
-      $output .= "∕$epcount";
-    }
-  [% END %]
-   - [% episode.kanji_name %]
-  [% END %]
-  [% UNLESS group_short_name == 'raw' %] [[% group_short_name %]][% END %]
-  [% IF video_resolution != '0x0' %][[% source %] [% video_resolution %] [% video_codec %] [% audio_codec %]][% END %]
-  .[%file_type%]
+  <: $anime.type :>/
+  : if $anime.type == 'TV Series' {
+  :   if $anime.is_ongoing {
+  Ongoing/
+  :   } else {
+  <: $anime.season_year :>q<: $anime.season_quarter :>/
+  :   }
+  : }
+  <: $anime.romaji_name :>/
+  <: $anime.kanji_name :>
+  : if $is_primary_episode {
+  :   if $file_version > 1 { print ' v' ~ $file_version }
+  : } else {
+   - <: $episode.number :>
+  :   if $file_version > 1 { print 'v' ~ $file_version }
+  :   if $anime.total_episodes && !$episode.is_special {
+  :     print '/' ~ $anime.total_episodes
+  :   }
+  :   if ($episode.kanji_name || $episode.english_name) != '' && $eid != 35113 {
+   - <: $episode.kanji_name || $episode.english_name :>
+  :   }
+  : }
+  : if $group_short_name != 'raw' { print ' [' ~ $group_short_name ~ ']' }
+  : if $video_resolution != '0x0' {
+  [<: $source :> <: $video_resolution :> <: $video_codec :> <: $audio_codec :>]
+  : }
+  .<: $file_type :>
 
 # Timeout for AniDB queries.
 # query_timeout: 15.0
