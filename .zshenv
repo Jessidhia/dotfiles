@@ -1,4 +1,5 @@
+_uname="$(test -x /usr/bin/uname && echo /usr/bin/uname || echo /bin/uname)"
 
-if [ "$(/usr/bin/uname)" = "Darwin" -a -d "/usr/local/bin" ]; then
+if [ "$($_uname)" = "Darwin" -a -d "/usr/local/bin" ]; then
     export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 fi
