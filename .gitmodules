@@ -1,6 +1,6 @@
 [submodule ".oh-my-zsh"]
 	path = .oh-my-zsh
-	url = https://github.com/robbyrussell/oh-my-zsh.git
+	url = git://github.com/robbyrussell/oh-my-zsh.git
 [submodule ".rbenv"]
 	path = .rbenv
 	url = git://github.com/sstephenson/rbenv.git
