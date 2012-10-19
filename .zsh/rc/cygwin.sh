@@ -1,20 +1,18 @@
 
 function _wrap_exe_if_exists() {
-    exe_path="$(find "$@" | head -n1)"
-    if [ -n "$exe_path" ]; then
-        wrap_exe "$exe_path"
+    if [ -n "$1" ]; then
+        wrap_exe "$1"
     fi
 }
 
 function _wrap_exe_bg_if_exists() {
-    exe_path="$(find "$@" | head -n1)"
-    if [ -n "$exe_path" ]; then
-        wrap_exe "$exe_path" '&'
+    if [ -n "$1" ]; then
+        wrap_exe "$1" '&'
     fi
 }
 
 if [[ "`uname`" =~ "CYGWIN" ]]; then
-    _wrap_exe_if_exists /cygdrive/c/Program*/VideoLAN/VLC/vlc.exe
-    _wrap_exe_bg_if_exists /cygdrive/c/Program*/Sublime\ Text\ 2/sublime_text.exe
+    _wrap_exe_if_exists /cygdrive/c/Program*/VideoLAN/VLC/vlc.exe(N)
+    _wrap_exe_bg_if_exists /cygdrive/c/Program*/Sublime\ Text\ 2/sublime_text.exe(N)
     alias st=sublime_text
 fi
