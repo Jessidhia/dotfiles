@@ -1,0 +1,20 @@
+# Write your default config options here!
+vo=opengl-hq
+ao=coreaudio,portaudio,dsound,oss
+
+subfont-osd-scale=1
+af=volnorm
+
+cache=16384
+
+include = /home/kovensky/.mpv/encoding-profiles.conf
+
+[enc-to-xperia-mini]
+profile-desc = "MP4 for Xperia Mini"
+profile = enc-f-mp4
+vf-add = scale=w=-2:h=320:noup=2,scale=w=480:h=-2:noup=2
+ass-font-scale = 1.1
+#ovcopts-add = maxrate=2500k,bufsize=1000k,rc_init_occupancy=900k,level=30,profile=baseline
+#ovcopts-add = maxrate=2500k,bufsize=1000k,rc_init_occupancy=900k,level=40,profile=high
+ovcopts-add = preset=slow,profile=main,level=40,tune=animation
+oacopts-add = b=128k
