@@ -10,6 +10,7 @@ call pathogen#infect()
 " BASIC EDITING CONFIGURATION
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible
+set modeline
 " allow unsaved background buffers and remember marks/undo for them
 set hidden
 " remember more commands and search history
