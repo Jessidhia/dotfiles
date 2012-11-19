@@ -9,3 +9,5 @@
 	smtpencryption = tls
 	smtpuser = diogomfranco@gmail.com
 	suppressfrom = 1
+[push]
+	default = simple
