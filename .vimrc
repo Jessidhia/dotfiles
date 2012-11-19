@@ -115,11 +115,6 @@ nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
-
-nnoremap <c-Down>  <c-w>j
-nnoremap <c-Up>    <c-w>k
-nnoremap <c-Left>  <c-w>h
-nnoremap <c-Right> <c-w>l
 " Insert a hash rocket with <c-l>
 imap <c-l> <space>=><space>
 " Can't be bothered to understand ESC vs <c-c> in insert mode
