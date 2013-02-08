@@ -30,7 +30,11 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(rbenv brew git bundler ruby gem rails3 osx perl cpanm github screen ssh-agent sublime zsh-syntax-highlighting)
+plugins=(rbenv brew git bundler ruby gem rails3 osx perl cpanm github screen sublime zsh-syntax-highlighting)
+
+if [ -z "$SSH_CLIENT" ]; then # only on local clients; agent is forwarded otherwise
+    plugins+=(ssh-agent)
+fi
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor)
 
