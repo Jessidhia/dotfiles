@@ -32,6 +32,8 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(rbenv brew git bundler ruby gem rails3 osx perl cpanm github screen ssh-agent sublime zsh-syntax-highlighting)
 
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor)
+
 source $ZSH/oh-my-zsh.sh
 
 for rc in $HOME/.zsh/rc/*; do . "$rc"; done
