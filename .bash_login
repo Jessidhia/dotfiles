@@ -1,0 +1,6 @@
+BIN_ZSH="$(which zsh)"
+
+if [ -n "$BIN_ZSH" ]; then
+    export SHELL="$BIN_ZSH"
+    exec $SHELL
+fi
