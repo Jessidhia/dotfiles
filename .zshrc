@@ -38,6 +38,8 @@ fi
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor)
 
+for rc in $HOME/.zsh/pre/*; do . "$rc"; done
+
 source $ZSH/oh-my-zsh.sh
 
 for rc in $HOME/.zsh/rc/*; do . "$rc"; done
