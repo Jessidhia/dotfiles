@@ -32,7 +32,9 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(rbenv brew git bundler ruby gem rails3 osx perl cpanm github screen sublime zsh-syntax-highlighting)
 
-if [ -z "$SSH_CLIENT" ]; then # only on local clients; agent is forwarded otherwise
+# only on local clients; agent is forwarded otherwise
+# darwin has its own ssh agent that's always running
+if [[ -z "$SSH_CLIENT" && "$OSTYPE" != darwin* ]]; then
     plugins+=(ssh-agent)
 fi
 
