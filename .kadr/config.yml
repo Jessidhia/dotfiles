@@ -28,8 +28,10 @@
 
 # A list of directories to index.
 dirs_to_scan:
+  - /Volumes/Yuuhi/Anime/Add
   - /Volumes/Yuuhi/HexChat/downloads/done
   - /Volumes/Yuuhi/Anime/Unwatched
+  - /Volumes/Yuuhi/Anime/Watching
   - /Volumes/Yuuhi/Anime/Watched
 
 # Empty directories are left behind when moving things.
@@ -37,10 +39,10 @@ dirs_to_scan:
 # delete_empty_dirs_in_scanned: 1
 
 # Where to place unwatched episodes when found in a directory for watched episodes.
-dir_to_put_unwatched_eps: /Volumes/Yuuhi/Anime/Unwatched
+dir_to_put_unwatched_eps: /Volumes/Yuuhi/Anime
 
 # Where to place watched episodes when found in a directory for unwatched episodes.
-dir_to_put_watched_eps: /Volumes/Yuuhi/Anime/Watched
+dir_to_put_watched_eps: /Volumes/Yuuhi/Anime
 
 # The entire state database is loaded into memory on startup by default.
 # This can be much faster when no AniDB queries are needed.
@@ -54,12 +56,21 @@ dir_to_put_watched_eps: /Volumes/Yuuhi/Anime/Watched
 # TODO: documentation of the available fields
 #
 file_naming_scheme: |
-  <: $anime.type :>/
-  : if $anime.type == 'TV Series' {
-  :   if $anime.is_ongoing {
+  : if $anime.watched && !$episode.watched {
+  Watching/
+  :   if !$anime.is_ongoing { print 'Ongoing' }
+  :   else { print 'Finished' }
+  /
+  : } else {
+  :   if $episode.watched { print 'Watched' }
+  :   else { print 'Unwatched' }
+  /<: $anime.type :>/
+  :   if $anime.type == 'TV Series' {
+  :     if $anime.is_ongoing {
   Ongoing/
-  :   } else {
-  <: $anime.season_year :>q<: $anime.season_quarter :>/
+  :     } else {
+  <: $anime.season_year :>/
+  :     }
   :   }
   : }
   <: $anime.romaji_name :>/
@@ -72,7 +83,7 @@ file_naming_scheme: |
   :   if $anime.total_episodes && !$episode.is_special {
   :     print '/' ~ $anime.total_episodes
   :   }
-  :   if ($episode.kanji_name || $episode.english_name) != '' && $eid != 35113 {
+  :   if ($episode.kanji_name || $episode.english_name) != '' && $eid != 35113 && $aid != 6082 {
    - <: $episode.kanji_name || $episode.english_name :>
   :   }
   : }
@@ -94,6 +105,7 @@ update_anidb_records_for_deleted_files: 1
 # A list of directories where unwatched episodes are allowed to be.
 valid_dirs_for_unwatched_eps:
   - /Volumes/Yuuhi/Anime/Unwatched
+  - /Volumes/Yuuhi/Anime/Watching
 
 # A list of directories where watched episodes are allowed to be.
 valid_dirs_for_watched_eps:
