@@ -5,10 +5,21 @@
 " vim:set ts=4 sts=4 sw=4 expandtab:
 
 let g:pathogen_disabled=[]
-if !has("python") && !has("python3")
-    call add(g:pathogen_disabled, 'powerline')
-else
+let g:use_py_powerline='False'
+if v:version >= 703 && has("patch661")
+    if has("python3") || has("python3/dyn")
+        py3 import vim
+        py3 vim.command("let g:use_py_powerline='" + str(sys.hexversion >= 0x030300f0) + "'")
+    elseif has("python") || has("python/dyn")
+        py import vim
+        py vim.command("let g:use_py_powerline='" + str(sys.hexversion >= 0x020700f0) + "'")
+    endif
+endif
+
+if g:use_py_powerline == 'True'
     call add(g:pathogen_disabled, 'vim-powerline')
+else
+    call add(g:pathogen_disabled, 'powerline')
 endif
 
 let g:Powerline_symbols = 'fancy'
