@@ -93,6 +93,9 @@ augroup vimrcEx
   " to run commands there.
   autocmd! CmdwinEnter * :unmap <cr>
   autocmd! CmdwinLeave * :call MapCR()
+
+  autocmd BufRead,BufNewFile *.iss set filetype=pascal
+  autocmd BufRead,BufNewFile *.isi set filetype=pascal
 augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
