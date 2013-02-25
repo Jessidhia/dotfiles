@@ -2,8 +2,10 @@
 vo=opengl-hq
 ao=coreaudio,portaudio,dsound,oss
 
-subfont-osd-scale=1
-af=volnorm
+alang=jap,jpn,jp,enu,eng,en,ptb,por,pt
+slang=jap,jpn,jp,enu,eng,en,ptb,por,pt
+
+osd-font-size=18
 
 cache=16384
 
@@ -13,8 +15,15 @@ include = /home/kovensky/.mpv/encoding-profiles.conf
 profile-desc = "MP4 for Xperia Mini"
 profile = enc-f-mp4
 vf-add = scale=w=-2:h=320:noup=2,scale=w=480:h=-2:noup=2
-ass-font-scale = 1.1
+sub-scale = 1.1
 #ovcopts-add = maxrate=2500k,bufsize=1000k,rc_init_occupancy=900k,level=30,profile=baseline
 #ovcopts-add = maxrate=2500k,bufsize=1000k,rc_init_occupancy=900k,level=40,profile=high
 ovcopts-add = preset=slow,profile=main,level=40,tune=animation
 oacopts-add = b=128k
+
+[enc-to-ipad-mini]
+profile-desc = "MP4 for iPad Mini"
+profile = enc-f-mp4
+oautofps = yes
+vf-add = scale=w=-2:h=768:noup=2,scale=w=1024:h=-2:noup=2
+ovcopts-add = preset=slow,profile=high,level=41,tune=animation,refs=10,crf=24

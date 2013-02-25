@@ -1,0 +1,11 @@
+BIN_ZSH="$(which zsh)"
+
+# We have git if we got this login script anyway
+if ! [ -e "$HOME/.oh-my-zsh/oh-my-zsh.sh" ]; then
+    . ~/.zsh/pre/00git-submodules.sh
+fi
+
+if [ -n "$BIN_ZSH" ]; then
+    export SHELL="$BIN_ZSH"
+    exec $SHELL
+fi
