@@ -4,6 +4,16 @@
 "
 " vim:set ts=4 sts=4 sw=4 expandtab:
 
+let g:pathogen_disabled=[]
+if !has("python") && !has("python3")
+    call add(g:pathogen_disabled, 'powerline')
+else
+    call add(g:pathogen_disabled, 'vim-powerline')
+endif
+
+let g:Powerline_symbols = 'fancy'
+let g:Powerline_colorscheme = 'solarized256'
+
 call pathogen#infect()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
