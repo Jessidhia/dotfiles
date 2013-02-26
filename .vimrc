@@ -18,6 +18,7 @@ endif
 
 if g:use_py_powerline == 'True'
     call add(g:pathogen_disabled, 'vim-powerline')
+    set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
 else
     call add(g:pathogen_disabled, 'powerline')
 endif
