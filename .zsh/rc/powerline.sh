@@ -1,2 +1,3 @@
-export PATH="$HOME/.vim/bundle/powerline/scripts:$PATH"
-export PYTHONPATH="$HOME/.vim/bundle/powerline:$PYTHONPATH"
+if [[ -n "$POWERLINE" && -f "$POWERLINE/powerline/bindings/zsh/powerline.zsh" ]]; then
+    . "$POWERLINE/powerline/bindings/zsh/powerline.zsh"
+fi

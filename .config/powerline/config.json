@@ -21,7 +21,7 @@
 		},
 		"shell": {
 			"colorscheme": "solarized",
-			"theme": "default"
+			"theme": "default_leftonly"
 		},
 		"tmux": {
 			"colorscheme": "default",

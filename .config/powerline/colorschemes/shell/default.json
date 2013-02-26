@@ -10,6 +10,7 @@
 		"cwd:divider": { "fg": "gray7", "bg": "gray4" },
 		"hostname": { "fg": "brightyellow", "bg": "mediumorange" },
 		"exit_fail": { "fg": "white", "bg": "darkestred" },
+		"last_status": { "fg": "white", "bg": "darkestred" },
 		"exit_success": { "fg": "white", "bg": "darkestgreen" }
 	}
 }
