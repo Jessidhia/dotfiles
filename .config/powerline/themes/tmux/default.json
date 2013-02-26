@@ -8,7 +8,7 @@
 			"before": "ⓦ  "
 		},
 		"date": {
-			"before": "⌚ "
+			"before": ""
 		},
 		"email_imap_alert": {
 			"before": "✉ ",
@@ -29,15 +29,7 @@
 				"priority": 50
 			},
 			{
-				"name": "network_load",
-				"priority": 50
-			},
-			{
 				"name": "system_load",
-				"priority": 50
-			},
-			{
-				"name": "weather",
 				"priority": 50
 			},
 			{
