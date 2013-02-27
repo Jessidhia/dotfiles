@@ -1,3 +1,4 @@
+#! /usr/bin/env zsh
 
 clone_or_pull () {
     git_src="$1"
