@@ -15,6 +15,8 @@ clone_or_pull () {
         fi
     else
         pushd "$clone_dst"
+        # Mimic git submodule foreach output
+        echo "Entering '$(echo $clone_dst | sed "s!$HOME/!!")'"
         git pull
         popd
     fi
@@ -22,3 +24,8 @@ clone_or_pull () {
 
 clone_or_pull git://github.com/sstephenson/ruby-build.git            "$HOME/.rbenv/plugins/ruby-build"
 clone_or_pull git://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.oh-my-zsh/plugins/zsh-syntax-highlighting" ".oh-my-zsh"
+
+pushd "$HOME"
+# Why, oh why do powerline / vim-powerline use "develop" instead of "master" for, well, master
+git submodule foreach 'echo $name | grep powerline >/dev/null && git checkout develop || git checkout master; git pull'
+popd
