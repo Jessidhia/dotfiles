@@ -7,7 +7,7 @@ clone_or_pull () {
 
     if ! [ -d "$clone_dst" ]; then
         mkdir -p "$(dirname "$clone_dst")"
-        git clone "$git_src" "$clone_dst"
+        git clone "$git_src" "$clone_dst" || exit $?
 
         if [ -n "$module_name" ]; then
             in_module_path="$(echo "$2" | sed "s!.*$module_name/!!")"
@@ -17,7 +17,7 @@ clone_or_pull () {
         pushd "$clone_dst"
         # Mimic git submodule foreach output
         echo "Entering '$(echo $clone_dst | sed "s!$HOME/!!")'"
-        git pull
+        git pull || exit $?
         popd
     fi
 }
@@ -27,5 +27,5 @@ clone_or_pull git://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.oh-
 
 pushd "$HOME"
 # Why, oh why do powerline / vim-powerline use "develop" instead of "master" for, well, master
-git submodule foreach 'echo $name | grep powerline >/dev/null && git checkout develop || git checkout master; git pull'
+git submodule foreach 'echo $name | grep powerline >/dev/null && git checkout develop || git checkout master; git pull' || exit $?
 popd
