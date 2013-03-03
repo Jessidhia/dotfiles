@@ -17,4 +17,6 @@ if [[ "`uname`" =~ "CYGWIN" ]]; then
     alias st=sublime_text
 
     ulimit -c 0
+
+    export CYGWIN="$CYGWIN nodosfilewarning"
 fi
