@@ -9,10 +9,10 @@ let g:use_py_powerline='False'
 if v:version >= 703 && has("patch661")
     if has("python3") || has("python3/dyn")
         py3 import vim
-        py3 vim.command("let g:use_py_powerline='" + str(sys.hexversion >= 0x030300f0) + "'")
+        py3 vim.command("let g:use_py_powerline='" + str(sys.hexversion >= 0x030200f0) + "'")
     elseif has("python") || has("python/dyn")
         py import vim
-        py vim.command("let g:use_py_powerline='" + str(sys.hexversion >= 0x020700f0) + "'")
+        py vim.command("let g:use_py_powerline='" + str(sys.hexversion >= 0x020600f0) + "'")
     endif
 endif
 
