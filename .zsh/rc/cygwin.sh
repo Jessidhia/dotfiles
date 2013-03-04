@@ -19,4 +19,5 @@ if [[ "`uname`" =~ "CYGWIN" ]]; then
     ulimit -c 0
 
     export CYGWIN="$CYGWIN nodosfilewarning"
+    export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 fi
