@@ -29,9 +29,8 @@
 # A list of directories to index.
 dirs_to_scan:
   - /Volumes/Yuuhi/Anime/Add
-  - /Volumes/Yuuhi/HexChat/downloads/done
-  - /Volumes/Yuuhi/Anime/Unwatched
   - /Volumes/Yuuhi/Anime/Watching
+  - /Volumes/Yuuhi/Anime/Unwatched
   - /Volumes/Yuuhi/Anime/Watched
 
 # Empty directories are left behind when moving things.
@@ -58,7 +57,7 @@ dir_to_put_watched_eps: /Volumes/Yuuhi/Anime
 file_naming_scheme: |
   : if $anime.watched && !$episode.watched {
   Watching/
-  :   if !$anime.is_ongoing { print 'Ongoing' }
+  :   if $anime.is_ongoing { print 'Ongoing' }
   :   else { print 'Finished' }
   /
   : } else {
