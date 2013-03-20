@@ -1,6 +1,6 @@
 # Write your default config options here!
 vo=opengl-hq
-ao=coreaudio,portaudio,dsound,oss
+ao=coreaudio,portaudio,dsound,oss,pulse
 
 alang=jap,jpn,jp,enu,eng,en,ptb,por,pt
 slang=jap,jpn,jp,enu,eng,en,ptb,por,pt
