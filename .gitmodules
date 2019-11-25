@@ -1,0 +1,36 @@
+[submodule "zplugin"]
+	path = submodules/zplugin
+	url = https://github.com/zdharma/zplugin
+	branch = master
+[submodule "rbenv"]
+	path = submodules/rbenv
+	url = https://github.com/rbenv/rbenv
+	branch = master
+[submodule "nodenv"]
+	path = submodules/nodenv
+	url = https://github.com/nodenv/nodenv
+	branch = master
+[submodule "node-build"]
+	path = submodules/node-build
+	url = https://github.com/nodenv/node-build
+	branch = master
+[submodule "node-build-update-defs"]
+	path = submodules/node-build-update-defs
+	url = https://github.com/nodenv/node-build-update-defs
+	branch = master
+[submodule "nodenv-npm-migrate"]
+	path = submodules/nodenv-npm-migrate
+	url = https://github.com/nodenv/nodenv-npm-migrate
+	branch = master
+[submodule "nodenv-update"]
+	path = submodules/nodenv-update
+	url = https://github.com/nodenv/nodenv-update
+	branch = master
+[submodule "ruby-build"]
+	path = submodules/ruby-build
+	url = https://github.com/rbenv/ruby-build
+	branch = master
+[submodule "powerline"]
+	path = submodules/powerline
+	url = https://github.com/powerline/powerline
+	branch = master

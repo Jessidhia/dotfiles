@@ -1,0 +1,1 @@
+../../../../submodules/nodenv/nodenv.d/exec/npx.bash

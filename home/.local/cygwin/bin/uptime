@@ -1,0 +1,33 @@
+#! /usr/bin/env perl
+
+use v5.14;
+use warnings qw{FATAL};
+
+open my $fh, '<', '/proc/uptime';
+chomp(my $line = <$fh>);
+close $fh;
+
+my @parts = split / /, $line;
+
+my $uptime = int($parts[0] + 0.5);
+
+my $s = $uptime % 60;
+$uptime /= 60;
+my $m = $uptime % 60;
+$uptime /= 60;
+my $h = $uptime % 24;
+$uptime /= 24;
+my $d = $uptime;
+
+open $fh, '<', '/proc/loadavg';
+chomp($line = <$fh>);
+close $fh;
+
+my @avgs = split / /, $line;
+
+chomp(my $users = `users | wc -l`);
+
+my @time = localtime;
+
+printf ' %02d:%02d:%02d up %d days, %2d:%02d, %d users, load averages: %.2f, %.2f, %.2f'."\n",
+  @time[2,1,0], $d, $h, $m, $users, @avgs[0,1,2];

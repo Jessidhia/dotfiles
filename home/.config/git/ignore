@@ -1,0 +1,12 @@
+*~
+._*
+*.orig
+*.rej
+*.exe
+.*.swp
+.tags*
+.DS_Store
+.SyncIgnore
+.idea/
+.vscode/
+*.code-workspace

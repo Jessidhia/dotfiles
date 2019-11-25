@@ -1,0 +1,20 @@
+defutf8 on
+defencoding UTF-8
+
+defflow off
+defscrollback 1000
+defmousetrack on
+
+nonblock on
+
+startup_message off
+deflogin off
+
+altscreen on
+term screen-256color
+bind ',' prev
+bind '.' next
+
+caption splitonly
+hardstatus alwayslastline
+hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %m-%d %{W}%c %{g}]'

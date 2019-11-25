@@ -1,0 +1,66 @@
+[alias]
+	l = log -E --decorate=short --graph --stat --stat-count=4 --cherry --notes --source
+[apply]
+	ignorewhitespace = change
+[color]
+	ui = auto
+[core]
+	whitespace = trailing-space,space-before-tab,tabwidth=4
+[grep]
+	lineNumber = true
+	extendedRegexp = true
+[gui]
+	warndetachedcommit = true
+[guitool "Local Ignore"]
+	cmd = echo $FILENAME >> $GIT_DIR/info/exclude
+	needsfile = yes
+	noconsole = yes
+[guitool "Stash/Save"]
+	cmd = git stash
+[guitool "Stash/Pop"]
+	cmd = git stash pop
+[help]
+	autocorrect = 5
+[log]
+	decorate = short
+[merge]
+	log = true
+[push]
+	default = simple
+	followTags = true
+[sendemail]
+	identity = gmail
+[sendemail "gmail"]
+	smtpencryption = tls
+	smtpserver = smtp.gmail.com
+	smtpserverport = 587
+	smtpuser = jessica@jessidhia.dev
+	suppressfrom = 1
+[url "git@github.com:"]
+	pushInsteadOf = git://github.com/
+	pushInsteadOf = https://github.com/
+[url "git@code.videolan.org:"]
+	pushInsteadOf = git://code.videolan.org/
+	pushInsteadOf = https://code.videolan.org/
+[user]
+	name = Jessica
+	email = jessica@jessidhia.dev
+[http]
+	cookiefile = ~/.gitcookies
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	required = true
+	process = git-lfs filter-process
+[fetch]
+	prune = true
+[diff]
+	compactionHeuristic = true
+	algorithm = patience
+	tool = code
+[difftool "code"]
+	cmd = code --wait --diff $LOCAL $REMOTE
+[include]
+	path = ~/.gitconfig.local
+[hub]
+	protocol = https

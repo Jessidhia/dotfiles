@@ -1,0 +1,9 @@
+. "$HOME/.zshenv"
+. "$HOME/.zsh/ensure.sh"
+
+# ensure.sh will exec zsh; if we still make it past ensure.sh,
+# we had no way of starting an acceptable version of zsh and are running bash
+
+if [[ "$OSTYPE" =~ "cygwin" ]]; then
+    export CYGWIN="$CYGWIN nodosfilewarning"
+fi
