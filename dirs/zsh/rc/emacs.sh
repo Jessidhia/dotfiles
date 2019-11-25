@@ -1,6 +1,6 @@
 #! /usr/bin/env zsh
 
-emacs () {
+function emacs () {
   case "$1" in
     --daemon)
       command emacs -nw "$@"

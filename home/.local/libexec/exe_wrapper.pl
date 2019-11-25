@@ -1,14 +1,11 @@
 #! /usr/bin/env perl
 
-use common::sense;
+use strict;
 use IO::Handle;
-use File::Which;
 
 exit 0 unless @ARGV;
 
 my $exe = shift;
-
-$exe = which($exe) unless -f $exe;
 
 unless (-f $exe) {
     STDERR->say("command not found: $exe");

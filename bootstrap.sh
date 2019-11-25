@@ -48,7 +48,12 @@ if [ -z "$editor" ]; then
   fi
 fi
 
-${editor} $tmpfile
+# if this is code, cygpath is available, and code is not the exe_wrapped function
+if [ "${editor%% *}" = "code" ] && type cygpath >/dev/null && ! ( whence -w code | grep -q function; ); then
+  ${editor} "$(cygpath -w "$tmpfile")"
+else
+  ${editor} $tmpfile
+fi
 
 code=$?
 

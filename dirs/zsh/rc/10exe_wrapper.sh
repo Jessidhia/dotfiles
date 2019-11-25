@@ -13,7 +13,8 @@ function wrap_exe() {
 
     alias="$(basename "$1" .exe)"
 
-    eval 'function '$alias'() { "$HOME/.local/libexec/exe_wrapper.pl" "'$exe'" "$@"'$semicolon' }'
+    # eval 'function '$alias'() { "$HOME/.local/libexec/exe_wrapper.pl" "'$exe'" "$@"'$semicolon' }'
+    eval 'alias '$alias'='\''"$HOME/.local/libexec/exe_wrapper.pl" "'$exe'"'\'
 
-    echo "Wrapped \"$1\" as \"$alias\""
+    # echo "Wrapped \"$1\" as \"$alias\""
 }
