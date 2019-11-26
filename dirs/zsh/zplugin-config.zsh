@@ -1,6 +1,13 @@
 zplugin ice depth=1 nocd
 zplugin light romkatv/powerlevel10k
 
+# load earliest (but after p10k) to avoid it clobbering things set by other plugins
+COMPLETION_WAITING_DOTS=true
+zplugin ice depth='1' as'null' nocd \
+    multisrc='lib/{completion,key-bindings,compfix,functions,termsupport}.zsh' \
+    atload='![[ "${(%):-%#}" != "#" ]] && handle_completion_insecurities'
+zplugin load robbyrussell/oh-my-zsh
+
 zplugin ice as='completion' \
   atclone="chmod +x ./rustup-init.sh && ./rustup-init.sh -v -y --default-toolchain none && ${(q)USERPROFILE:-$HOME}/.cargo/bin/rustup completions zsh > ./_rustup" \
   atpull='%atclone' \
@@ -9,7 +16,7 @@ zplugin snippet 'https://github.com/rust-lang/rustup/blob/master/rustup-init.sh'
 
 zplugin ice lucid atclone='"${commands[dircolors]:-$commands[gdircolors]}" -b LS_COLORS > clrs.zsh' \
     atpull='%atclone' pick='clrs.zsh' nocompile'!' \
-    atload='zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”' \
+    atload='zstyle '\'':completion:*'\'' list-colors "${(s.:.)LS_COLORS%:}"' \
     if='[[ -n "${commands[dircolors]:-$commands[gdircolors]}" ]]'
 zplugin light trapd00r/LS_COLORS
 
@@ -18,12 +25,6 @@ zplugin light zsh-users/zsh-completions
 
 zplugin ice as='completion' mv='_mpv.zsh -> _mpv'
 zplugin snippet 'https://github.com/mpv-player/mpv/blob/master/etc/_mpv.zsh'
-
-COMPLETION_WAITING_DOTS=true
-zplugin ice depth='1' as'null' nocd \
-    multisrc='lib/{completion,key-bindings,compfix,functions,termsupport}.zsh' \
-    atload='![[ "${(%):-%#}" != "#" ]] && handle_completion_insecurities'
-zplugin load robbyrussell/oh-my-zsh
 
 if [[ "${(%):-%#}" != "#" ]]; then
     # only if not root

@@ -33,5 +33,3 @@ else
         ls --color -d . &>/dev/null && alias ls='ls --color=tty -hF' || { ls -G . &>/dev/null && alias ls='ls -hFG' }
     fi
 fi
-
-[[ -n "$LS_COLORS" ]] && zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS%:}"
