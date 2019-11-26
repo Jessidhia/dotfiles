@@ -5,7 +5,7 @@ if [[ "${terminfo[colors]}" -ge 16 ]]; then
     export CLICOLOR=true
 fi
 
-if [[ "$COLORTERM" != (24bit|truecolor) && "${terminfo[colors]}" -lt 16777216 && "${terminfo[colors]}" -ge 88 ]]; then
+if [[ ! "$COLORTERM" =~ (24bit|truecolor) && "${terminfo[colors]}" -lt 16777216 && "${terminfo[colors]}" -ge 88 ]]; then
     # if the terminal doesn't support RGB colors, load zsh's color approximation module (which requires at least 88 color support)
     zmodload zsh/nearcolor
 fi
@@ -24,7 +24,7 @@ elif lsd --icon-theme=fancy -d . &>/dev/null; then
 else
     # stolen from oh-my-zsh's theme-and-appearance.zsh but heavily simplified
     # only used if neither exa or lsd are available
-    if [[ "$OSTYPE" == (darwin|freebsd)* ]]; then
+    if [[ "$OSTYPE" =~ (darwin|freebsd) ]]; then
         ls -G . &>/dev/null && alias ls='ls -hFG'
 
         # uses GNU ls if installed, ignores otherwise
@@ -33,3 +33,5 @@ else
         ls --color -d . &>/dev/null && alias ls='ls --color=tty -hF' || { ls -G . &>/dev/null && alias ls='ls -hFG' }
     fi
 fi
+
+[[ -n "$LS_COLORS" ]] && zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS%:}"
