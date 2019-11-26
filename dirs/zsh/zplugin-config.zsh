@@ -46,7 +46,7 @@ zplugin light zsh-users/zsh-autosuggestions
 # must be last
 function .zpcompinit () {
     zpcompinit
-    zrecompile -p -M "$_comp_dumpfile"
+    zrecompile -q -p -M "$_comp_dumpfile"
 }
 zplugin ice lucid wait \
     atinit='ZPLGM[COMPINIT_OPTS]=-i; ZPLGM[ZCOMPDUMP_PATH]="${ZDOTDIR:-$HOME}/.zsh/.${SHORT_HOST:-$HOST}-${ZSH_VERSION}.zcompdump"; .zpcompinit; zpcdreplay; unset -f .zpcompinit'
