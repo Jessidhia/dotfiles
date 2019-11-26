@@ -39,15 +39,17 @@ function .zrecompile () {
       "${ZDOTDIR:-$HOME}"/.(zshrc|zshenv|*.(|z)sh)(P:--:P:-U:P:-R:) \
       "${ZDOTDIR:-$HOME}"/.zsh/{,(pre|rc)/}*.(|z)sh(P:--:P:-U:P:-R:)
 
-    local p
-    # for all paths in fpath where the parent directory is writable to
-    for p in ${^fpath}(NFe.'[[ -w $REPLY:h ]]'.); do
-      if [[ -d $p ]]; then
-        \zrecompile "$@" -p -U -R $p $p/*
-      else
-        \zrecompile "$@" -p -U -R $p
-      fi
-    done
+    if [[ "$OSTYPE" != cygwin ]]; then
+      local p
+      # for all paths in fpath where the parent directory is writable to
+      for p in ${^fpath}(NFe.'[[ -w $REPLY:h ]]'.); do
+        if [[ -d $p ]]; then
+          \zrecompile "$@" -p -U -R $p $p/*
+        else
+          \zrecompile "$@" -p -U -R $p
+        fi
+      done
+    fi
   fi
 }
 alias zrecompile=.zrecompile
