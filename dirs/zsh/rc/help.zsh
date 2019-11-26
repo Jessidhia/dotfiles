@@ -1,2 +1,2 @@
-unalias run-help
-autoload run-help
+alias run-help &>/dev/null && unalias run-help
+autoload -U run-help
