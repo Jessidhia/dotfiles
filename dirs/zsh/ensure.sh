@@ -44,9 +44,20 @@ check_zsh() {
     case "$?" in
         0|1)
             export SHELL="$BIN_ZSH"
-            exec "$SHELL"
+            exec "$SHELL" ${-+-$-}
             ;;
         2)
+            if [[ -x "$HOME/.local/bin/zsh" ]]; then
+                BIN_ZSH="$HOME/.local/bin/zsh"
+                version_compare "$("$BIN_ZSH" --version | awk '{print $2}')" "$minimum_zsh_version"
+                case "$?" in
+                    0|1)
+                        export SHELL="$BIN_ZSH"
+                        exec "$SHELL" ${-+-$-}
+                        ;;
+                esac
+            fi
+
             if [[ -z "$zsh_already_built" ]]; then
                 if curl --help >/dev/null; then
                     if build_zsh; then
