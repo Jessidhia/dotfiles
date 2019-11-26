@@ -31,7 +31,7 @@ autoload -U zrecompile
 function .zrecompile () {
   # if filtering the parameter list by the ones that match "-(|*)p" has a non-empty result
   if [[ -n ${(M@)"${@:-}":##-(|*)p} ]]; then
-    # then don't do our defaults; paths were passed with -p
+    # then don't do the default paths; paths were passed with -p
     \zrecompile "$@"
   else
     # prepends "--" "-U" "-R" to everything matched by the glob
