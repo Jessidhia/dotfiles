@@ -29,7 +29,7 @@ typeset -g PS3="%F{$POWERLEVEL9K_BACKGROUND}${(g::)POWERLEVEL9K_LEFT_PROMPT_LAST
 
 autoload -U zrecompile
 function .zrecompile () {
-  # if filtering the parameter list by the ones that match "-(|*)p" has a non-empty result
+  # if filtering the parameter list by the ones that match "#-(|*)p" has a non-empty result
   if [[ -n ${(M@)"${@:-}":##-(|*)p} ]]; then
     # then don't do the default paths; paths were passed with -p
     \zrecompile "$@"
