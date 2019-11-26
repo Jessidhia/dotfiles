@@ -10,3 +10,6 @@
 .idea/
 .vscode/
 *.code-workspace
+*.zwc
+*.zwc.old
+*.zcompdump

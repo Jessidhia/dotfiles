@@ -4,7 +4,8 @@ zplugin light romkatv/powerlevel10k
 # load earliest (but after p10k) to avoid it clobbering things set by other plugins
 COMPLETION_WAITING_DOTS=true
 zplugin ice depth='1' as'null' nocd \
-    multisrc='lib/{completion,key-bindings,compfix,functions,termsupport}.zsh' \
+    atinit='HISTFILE="$HOME/.zsh/history"; HIST_STAMPS="yyyy-mm-dd"' \
+    multisrc='lib/{completion,key-bindings,compfix,functions,history,termsupport}.zsh' \
     atload='![[ "${(%):-%#}" != "#" ]] && handle_completion_insecurities'
 zplugin load robbyrussell/oh-my-zsh
 
@@ -43,5 +44,10 @@ zplugin ice lucid wait atload='_zsh_autosuggest_start'
 zplugin light zsh-users/zsh-autosuggestions
 
 # must be last
-zplugin ice lucid wait atinit='ZPLGM[COMPINIT_OPTS]=-i; zpcompinit; zpcdreplay'
+function .zpcompinit () {
+    zpcompinit
+    zrecompile -p -M "$_comp_dumpfile"
+}
+zplugin ice lucid wait \
+    atinit='ZPLGM[COMPINIT_OPTS]=-i; ZPLGM[ZCOMPDUMP_PATH]="${ZDOTDIR:-$HOME}/.zsh/.${SHORT_HOST:-$HOST}-${ZSH_VERSION}.zcompdump"; .zpcompinit; zpcdreplay; unset -f .zpcompinit'
 zplugin light zdharma/fast-syntax-highlighting

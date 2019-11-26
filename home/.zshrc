@@ -7,12 +7,12 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-for rc in $HOME/.zsh/pre/*; do . "$rc"; done
+for rc in $HOME/.zsh/pre/*.(|z)sh; do . "$rc"; done
 
 . "$HOME/.zplugin/bin/zplugin.zsh"
 . "$HOME/.zsh/zplugin-config.zsh"
 
-for rc in $HOME/.zsh/rc/*; do . "$rc"; done
+for rc in $HOME/.zsh/rc/*.(|z)sh; do . "$rc"; done
 
 if test -e "${HOME}/.iterm2_shell_integration.zsh"; then . "${HOME}/.iterm2_shell_integration.zsh"; fi
 
@@ -26,3 +26,30 @@ fi
 
 typeset -g PS2="%F{$POWERLEVEL9K_BACKGROUND}${(g::)POWERLEVEL9K_LEFT_PROMPT_FIRST_SEGMENT_START_SYMBOL}%f%K{$POWERLEVEL9K_BACKGROUND}%F{255} %_ %k%F{$POWERLEVEL9K_BACKGROUND}${(g::)POWERLEVEL9K_LEFT_PROMPT_LAST_SEGMENT_END_SYMBOL}%f "
 typeset -g PS3="%F{$POWERLEVEL9K_BACKGROUND}${(g::)POWERLEVEL9K_LEFT_PROMPT_LAST_SEGMENT_END_SYMBOL}%f "
+
+autoload -U zrecompile
+function .zrecompile () {
+  # if filtering the parameter list by the ones that match "-(|*)p" has a non-empty result
+  if [[ -n ${(M@)"${@:-}":##-(|*)p} ]]; then
+    # then don't do our defaults; paths were passed with -p
+    \zrecompile "$@"
+  else
+    # prepends "--" "-U" "-R" to everything matched by the glob
+    \zrecompile "$@" -p \
+      "${ZDOTDIR:-$HOME}"/.(zshrc|zshenv|*.(|z)sh)(P:--:P:-U:P:-R:) \
+      "${ZDOTDIR:-$HOME}"/.zsh/{,(pre|rc)/}*.(|z)sh(P:--:P:-U:P:-R:)
+
+    local p
+    # for all paths in fpath where the parent directory is writable to
+    for p in ${^fpath}(NFe.'[[ -w $REPLY:h ]]'.); do
+      if [[ -d $p ]]; then
+        \zrecompile "$@" -p -U -R $p $p/*
+      else
+        \zrecompile "$@" -p -U -R $p
+      fi
+    done
+  fi
+}
+alias zrecompile=.zrecompile
+
+zrecompile -q

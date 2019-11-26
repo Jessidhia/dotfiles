@@ -1,1 +1,5 @@
 /dirs/zsh/history
+/dirs/zsh/.zcompdump*
+/dirs/zsh/*.zcompdump
+*.zwc
+*.zwc.old
