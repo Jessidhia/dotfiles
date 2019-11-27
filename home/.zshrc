@@ -14,8 +14,6 @@ for rc in $HOME/.zsh/pre/*.(|z)sh; do . "$rc"; done
 
 for rc in $HOME/.zsh/rc/*.(|z)sh; do . "$rc"; done
 
-if test -e "${HOME}/.iterm2_shell_integration.zsh"; then . "${HOME}/.iterm2_shell_integration.zsh"; fi
-
 if [[ "$do_burst" = true ]]; then
     unset do_burst
     -zplg-scheduler burst || true
