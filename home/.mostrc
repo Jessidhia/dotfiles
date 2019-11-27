@@ -27,6 +27,8 @@ color overstrike brightred brightblack
 % idea to use "cat" from https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=516842
 setkey bob "^[[H"
 setkey eob "^[[F"
+setkey bob "^[[7~"
+setkey eob "^[[8~"
 
 % Keybindings
 
