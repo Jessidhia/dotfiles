@@ -5,6 +5,16 @@ if [[ "${terminfo[colors]}" -ge 16 ]]; then
     export CLICOLOR=true
 fi
 
+# hack to "pierce" default sshd configs (accepts LC_*) with the COLORTERM setting
+if [[ -n $LC_COLORTERM ]]; then
+    : ${COLORTERM:=$LC_COLORTERM}
+fi
+
+if [[ -n $COLORTERM ]]; then
+    # mirror COLORTERM on LC_COLORTERM for the above hack
+    export LC_COLORTERM="$COLORTERM"
+fi
+
 if [[ ! "$COLORTERM" =~ (24bit|truecolor) && "${terminfo[colors]}" -lt 16777216 && "${terminfo[colors]}" -ge 88 ]]; then
     # if the terminal doesn't support RGB colors, load zsh's color approximation module (which requires at least 88 color support)
     zmodload zsh/nearcolor
