@@ -2,7 +2,7 @@
 
 set -e
 
-function .colorize_summary () {
+function .colorize_git_summary () {
   builtin emulate -L zsh
 
   local -a tokens
@@ -22,7 +22,7 @@ function .colorize_summary () {
       ;; *)
         print "$REPLY"
       ;;
-    esac;
+    esac
   done
   # NOTE: assumes lack of output means success
   if [[ $up_to_date = true ]]; then
@@ -31,4 +31,4 @@ function .colorize_summary () {
 }
 
 git submodule update --init --remote --recursive --merge "$@"
-git submodule summary | .colorize_summary
+git submodule summary | .colorize_git_summary
