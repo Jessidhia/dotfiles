@@ -30,3 +30,12 @@ else
     export GIT_PAGER=$commands[moar]
   fi
 fi
+
+# patch zplugin's pager to avoid the possible `less` alias above
+function -zplg-pager () {
+  if [[ ${${commands[less]}:A:t} = 'busybox' ]]; then
+    more
+  else
+    \less -FRXi
+  fi
+}
