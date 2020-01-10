@@ -39,6 +39,9 @@
 [url "git@github.com:"]
 	pushInsteadOf = git://github.com/
 	pushInsteadOf = https://github.com/
+[url "git@gist.github.com:"]
+	pushInsteadOf = git://gist.github.com/Jessidhia/
+	pushInsteadOf = https://gist.github.com/Jessidhia/
 [url "git@code.videolan.org:"]
 	pushInsteadOf = git://code.videolan.org/
 	pushInsteadOf = https://code.videolan.org/
