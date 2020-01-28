@@ -1,6 +1,6 @@
-[submodule "zplugin"]
-	path = submodules/zplugin
-	url = https://github.com/zdharma/zplugin
+[submodule "zinit"]
+	path = submodules/zinit
+	url = https://github.com/zdharma/zinit
 	branch = master
 [submodule "rbenv"]
 	path = submodules/rbenv

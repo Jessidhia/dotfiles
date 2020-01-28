@@ -31,8 +31,8 @@ else
   fi
 fi
 
-# patch zplugin's pager to avoid the possible `less` alias above
-function -zplg-pager () {
+# patch zinit's pager to avoid the possible `less` alias above
+function .zinit-pager () {
   if [[ ${${commands[less]}:A:t} = 'busybox' ]]; then
     more
   else

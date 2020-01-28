@@ -9,14 +9,14 @@ fi
 
 for rc in $HOME/.zsh/pre/*.(|z)sh; do . "$rc"; done
 
-. "$HOME/.zplugin/bin/zplugin.zsh"
-. "$HOME/.zsh/zplugin-config.zsh"
+. "$HOME/.zinit/bin/zinit.zsh"
+. "$HOME/.zsh/zinit-config.zsh"
 
 for rc in $HOME/.zsh/rc/*.(|z)sh; do . "$rc"; done
 
 if [[ "$do_burst" = true ]]; then
     unset do_burst
-    -zplg-scheduler burst || true
+    @zinit-scheduler burst || true
 fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
