@@ -36,6 +36,6 @@ function .zinit-pager () {
   if [[ ${${commands[less]}:A:t} = 'busybox' ]]; then
     more
   else
-    \less -FRXi
+    command less -FRXi
   fi
 }
