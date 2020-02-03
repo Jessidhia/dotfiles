@@ -30,3 +30,12 @@ else
     export GIT_PAGER=$commands[moar]
   fi
 fi
+
+# patch zinit's pager to avoid the possible `less` alias above
+function .zinit-pager () {
+  if [[ ${${commands[less]}:A:t} = 'busybox' ]]; then
+    more
+  else
+    command less -FRXi
+  fi
+}

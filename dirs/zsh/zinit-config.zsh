@@ -43,20 +43,6 @@ fi
 zinit ice lucid wait atload='_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 
-function .fixup-zinit-pager () {
-    # patch zinit's pager to avoid possible `less` aliases
-    function .zinit-pager () {
-        if [[ ${${commands[less]}:A:t} = 'busybox' ]]; then
-            more
-        else
-            command less -FRXi
-        fi
-    }
-    unset -f .fixup-zinit-pager
-}
-zinit ice lucid wait as='null' nocompile atload='.fixup-zinit-pager'
-zinit light zdharma/null
-
 # must be last
 function .zicompinit () {
     zicompinit
