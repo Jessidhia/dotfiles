@@ -17,9 +17,6 @@ unset p
 if [[ -z "$PAGER" ]]; then
   unset PAGER
 else
-  if [[ $PAGER != *less ]]; then
-    alias less="$PAGER"
-  fi
   export PAGER
 
   if [[ $PAGER = *(less|most) ]]; then
@@ -30,12 +27,3 @@ else
     export GIT_PAGER=$commands[moar]
   fi
 fi
-
-# patch zinit's pager to avoid the possible `less` alias above
-function .zinit-pager () {
-  if [[ ${${commands[less]}:A:t} = 'busybox' ]]; then
-    more
-  else
-    command less -FRXi
-  fi
-}
