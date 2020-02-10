@@ -49,7 +49,7 @@ if [ -z "$editor" ]; then
 fi
 
 # if this is code, cygpath is available, and code is not the exe_wrapped function
-if [ "${editor%% *}" = "code" ] && type cygpath >/dev/null && ! ( whence -w code | grep -q function; ); then
+if [ "${editor%% *}" = "code" ] && type cygpath >/dev/null 2>/dev/null && ! ( whence -w code | grep -q function; ); then
   ${editor} "$(cygpath -w "$tmpfile")"
 else
   ${editor} $tmpfile
@@ -85,9 +85,9 @@ fi
 while read castle; do
   if [[ -n "$castle" ]]; then
     if [[ -d "$HOME"/.homesick/repos/"${castle##*/}" ]]; then
-      homeshick pull --batch "${castle##*/}"
+      yes | homeshick pull "${castle##*/}"
     else
-      homeshick clone --batch "$castle"
+      yes | homeshick clone "$castle"
     fi
   fi
 done <<EOF
