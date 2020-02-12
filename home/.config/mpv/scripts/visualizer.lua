@@ -30,6 +30,8 @@ local opts = {
 -- key bindings
 -- cycle visualizer
 local cycle_key = "c"
+local force_key = "C"
+local is_forced = false
 
 if not (mp.get_property("options/lavfi-complex", "") == "") then
     return
@@ -263,17 +265,17 @@ local function get_visualizer(name, quality)
     return ""
 end
 
-local function select_visualizer(atrack, vtrack, albumart)
-    if opts.mode == "off" then
+local function select_visualizer(mode, atrack, vtrack, albumart)
+    if mode == "off" then
         return ""
-    elseif opts.mode == "force" then
+    elseif mode == "force" then
         return get_visualizer(opts.name, opts.quality)
-    elseif opts.mode == "noalbumart" then
+    elseif mode == "noalbumart" then
         if albumart == 0 and vtrack == 0 then
             return get_visualizer(opts.name, opts.quality)
         end
         return ""
-    elseif opts.mode == "novideo" then
+    elseif mode == "novideo" then
         if vtrack == 0 then
             return get_visualizer(opts.name, opts.quality)
         end
@@ -306,7 +308,7 @@ local function visualizer_hook()
         end
     end
 
-    mp.set_property("options/lavfi-complex", select_visualizer(atrack, vtrack, albumart))
+    mp.set_property("options/lavfi-complex", select_visualizer(opts.mode, atrack, vtrack, albumart))
 end
 
 mp.add_hook("on_preloaded", 50, visualizer_hook)
@@ -326,4 +328,14 @@ local function cycle_visualizer()
     visualizer_hook()
 end
 
+local function force_visualizer()
+    is_forced = not is_forced
+    if is_forced then
+        mp.set_property("options/lavfi-complex", select_visualizer("force", atrack, vtrack, albumart))
+    else
+        mp.set_property("options/lavfi-complex", select_visualizer(opts.mode, atrack, vtrack, albumart))
+    end
+end
+
 mp.add_key_binding(cycle_key, "cycle-visualizer", cycle_visualizer)
+mp.add_key_binding(force_key, "force-visualizer", force_visualizer)
