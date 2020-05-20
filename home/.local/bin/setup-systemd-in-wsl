@@ -42,6 +42,10 @@ EOF
 #   cmd.exe /C setx BASH_ENV /etc/bash.bashrc
 # fi
 
+# disable the `getty` terminals that systemd starts
+# wsl can only access ptys, not actual ttys
+sudo rm -rf /etc/systemd/system/getty.target.wants/
+
 # HACK to deal with the binfmt_misc problem in systemd
 
 # mask the proc-sys-fs-binfmt_misc.{auto,}mount units
