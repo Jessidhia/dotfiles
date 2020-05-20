@@ -21,7 +21,7 @@ if [[ ! -d "$self_dir" ]]; then
   exit 1
 fi
 
-sudo apt-get update && sudo apt-get install -yqq daemonize dbus-user-session fontconfig
+sudo apt-get update && sudo apt-get install -yqq daemonize dbus-user-session fontconfig patch
 
 sudo cp "$self_dir/start-systemd-namespace" /usr/sbin/start-systemd-namespace
 sudo cp "$self_dir/enter-systemd-namespace" /usr/sbin/enter-systemd-namespace
@@ -41,3 +41,26 @@ EOF
 #   cmd.exe /C setx WSLENV BASH_ENV/u
 #   cmd.exe /C setx BASH_ENV /etc/bash.bashrc
 # fi
+
+# HACK to deal with the binfmt_misc problem in systemd
+
+# mask the proc-sys-fs-binfmt_misc.{auto,}mount units
+sudo ln -s /dev/null /etc/systemd/system/proc-sys-fs-binfmt_misc.automount
+sudo ln -s /dev/null /etc/systemd/system/proc-sys-fs-binfmt_misc.mount
+
+# patch the script that starts up systemd to "bounce" the non-systemd binfmt_misc into the systemd namespace
+sudo patch -r - -u /usr/sbin/enter-systemd-namespace <<'EOF'
+--- a/enter-systemd-namespace
++++ b/enter-systemd-namespace
+@@ -18,2 +18,4 @@
+ if [ -z "$SYSTEMD_PID" ]; then
++    mkdir -p /run/user/binfmt_misc
++    mount --bind /proc/sys/fs/binfmt_misc /run/user/binfmt_misc
+     "$DAEMONIZE" /usr/bin/unshare --fork --pid --mount-proc /lib/systemd/systemd --system-unit=basic.target
+@@ -22,4 +24,5 @@
+     done
++    mount --namespace "$SYSTEMD_PID" --bind /run/user/binfmt_misc /proc/sys/fs/binfmt_misc
+ fi
+ 
+ USER_HOME="$(getent passwd | awk '{ FS=":" } /'"$SUDO_USER"'/ {print $6}')"
+EOF
