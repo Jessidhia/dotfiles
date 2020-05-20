@@ -1,5 +1,13 @@
 # NOTE: this file is also being sourced by bash scripts
 
+if [[ -f /usr/sbin/start-systemd-namespace ]]; then
+  if [[ -n "$ZSH_EXECUTION_STRING" ]]; then
+    # start-systemd-namespace expects to see bash-specific envvars
+    BASH_EXECUTION_STRING="$ZSH_EXECUTION_STRING"
+  fi
+  . /usr/sbin/start-systemd-namespace
+fi
+
 if [[ -z "$PROFILEREAD" ]]; then
   # Skip the Ubuntu global compinit
   readonly skip_global_compinit=1

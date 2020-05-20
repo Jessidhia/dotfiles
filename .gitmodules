@@ -34,3 +34,6 @@
 	path = submodules/powerline
 	url = https://github.com/powerline/powerline
 	branch = master
+[submodule "submodules/ubuntu-wsl2-systemd-script"]
+	path = submodules/ubuntu-wsl2-systemd-script
+	url = https://github.com/DamionGans/ubuntu-wsl2-systemd-script
