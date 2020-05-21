@@ -64,6 +64,6 @@
 [difftool "code"]
 	cmd = code --wait --diff $LOCAL $REMOTE
 [include]
-	path = ~/.gitconfig.local
+	path = ./local
 [hub]
 	protocol = https
