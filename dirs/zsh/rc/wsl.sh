@@ -1,6 +1,7 @@
 if [[ "$OSTYPE" = "linux-gnu" && -n "$WSL_DISTRO_NAME" ]] && type wslview &>/dev/null; then
     if [[ -f /proc/sys/fs/binfmt_misc/WSLInterop && "$(head -n1  /proc/sys/fs/binfmt_misc/WSLInterop)" == "enabled" ]]; then
         alias open=wslview
+        alias xdg-open=wslview
 
         hash -d profile="$(wslpath "$(wslvar -s USERPROFILE)")"
         if [[ ! -e "$HOME/profile" ]]; then
