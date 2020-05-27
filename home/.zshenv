@@ -44,5 +44,8 @@ if [[ -z "$PROFILEREAD" ]]; then
 
   if [[ "$OSTYPE" = "cygwin" ]]; then
     export PATH="$HOME/.local/cygwin/bin${PATH:+:${PATH}}"
+  elif [[ -n "$WSL_DISTRO_NAME" && -f /proc/sys/fs/binfmt_misc/WSLInterop && \
+    "$(head -n1 /proc/sys/fs/binfmt_misc/WSLInterop)" == "enabled" ]]; then
+    export PATH="$HOME/.local/wsl/bin${PATH:+:${PATH}}"
   fi
 fi

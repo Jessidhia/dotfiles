@@ -1,0 +1,32 @@
+#!/bin/zsh
+
+if [[ "$WSLENV" != *MPV_HOME* ]]; then
+  export WSLENV="MPV_HOME/p${WSLENV:+:${WSLENV}}"
+fi
+
+local REAL_MPV_HOME="${MPV_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}/mpv}"
+
+if [[ "$(find "$REAL_MPV_HOME" -type l | wc -l)" = 0 ]]; then
+  # no symlinks to hack around
+  export MPV_HOME="$REAL_MPV_HOME"
+else
+  # Workaround for https://github.com/microsoft/WSL/issues/5118
+  # WSL will translate the path into a \\wsl$\ UNC path, which _does_ work,
+  # but doesn't resolve or allow access to symlinks
+  #
+  # duplicate the REAL_MPV_HOME with all symlinks resolved in another directory
+
+  export MPV_HOME="${XDG_CACHE_HOME:-$HOME/.cache}/mpv-wsl"
+  rsync -rkLptgo -m --delete-after "$REAL_MPV_HOME/" "$MPV_HOME/"
+fi
+
+local args=()
+for arg in "$@"; do
+  if [[ -e "$arg" ]]; then
+    args+=("$(wslpath -m "$arg")")
+  else
+    args+=("$arg")
+  fi
+done
+
+exec mpv.com "${args[@]}"
