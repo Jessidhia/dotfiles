@@ -11,7 +11,7 @@ if [[ "$OSTYPE" = "linux-gnu" && -n "$WSL_DISTRO_NAME" ]] && type wslview &>/dev
         # if interactive login shell starting on home directory
         if [[ $- = *l* && $- = *i* && $PWD = ~profile ]]; then
             # cd to the wsl home directory
-            cd
+            #cd
         fi
     fi
 fi
