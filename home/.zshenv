@@ -1,5 +1,9 @@
 # NOTE: this file is also being sourced by bash scripts
 
+if grep -q '^ID.*=.*ubuntu' /etc/os-release; then
+  skip_global_compinit=1
+fi
+
 if [[ -f /usr/sbin/start-systemd-namespace ]]; then
   if [[ -n "$ZSH_EXECUTION_STRING" ]]; then
     # start-systemd-namespace expects to see bash-specific envvars
