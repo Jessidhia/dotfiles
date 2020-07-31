@@ -5,7 +5,7 @@ zinit light romkatv/powerlevel10k
 COMPLETION_WAITING_DOTS=true
 zinit ice depth='1' as'null' nocd \
     atinit='HISTFILE="$HOME/.zsh/history"; HIST_STAMPS="yyyy-mm-dd"' \
-    multisrc='lib/{completion,key-bindings,compfix,functions,history,termsupport}.zsh' \
+    multisrc='lib/{key-bindings,compfix,functions,history,termsupport}.zsh' \
     atload='![[ "${(%):-%#}" != "#" ]] && handle_completion_insecurities'
 zinit load robbyrussell/oh-my-zsh
 
