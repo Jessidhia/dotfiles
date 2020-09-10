@@ -30,10 +30,9 @@
 	path = submodules/ruby-build
 	url = https://github.com/rbenv/ruby-build
 	branch = master
-[submodule "powerline"]
-	path = submodules/powerline
-	url = https://github.com/powerline/powerline
-	branch = master
 [submodule "submodules/ubuntu-wsl2-systemd-script"]
 	path = submodules/ubuntu-wsl2-systemd-script
 	url = https://github.com/DamionGans/ubuntu-wsl2-systemd-script
+[submodule "submodules/tpm"]
+	path = submodules/tpm
+	url = https://github.com/tmux-plugins/tpm

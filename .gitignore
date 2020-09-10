@@ -1,5 +1,6 @@
 /dirs/zsh/history
 /dirs/zsh/.zcompdump*
 /dirs/zsh/*.zcompdump
+/dirs/tmux/plugins
 *.zwc
 *.zwc.old
