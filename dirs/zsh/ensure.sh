@@ -6,7 +6,9 @@ version_compare () {
         return 0
     fi
 
-    if [[ "$(echo -e "$1\n$2" | sort -t '.' -k 1,1 -k 2,2 -k 3,3 -n | head -n 1)" == "$2" ]]; then
+    # on Cygwin, it's possible that the $SYSTEMROOT/system32/sort is ahead of /bin/sort in the PATH
+    local SORT_CMD="$(if [[ $OSTYPE = cygwin ]]; then echo /bin/sort; else echo sort; fi)"
+    if [[ "$(echo -e "$1\n$2" | "$SORT_CMD" -t '.' -k 1,1 -k 2,2 -k 3,3 -n | head -n 1)" == "$2" ]]; then
       return 1
     fi
 

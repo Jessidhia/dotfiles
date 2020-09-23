@@ -20,6 +20,6 @@ if [[ "$OSTYPE" =~ "cygwin" ]]; then
 
     ulimit -c 0
 
-    export CYGWIN="proc_retry:2 winsymlinks:native${CYGWIN:+ ${CYGWIN}}"
+    export CYGWIN="proc_retry:2 winsymlinks${CYGWIN:+ ${CYGWIN}}"
     export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 fi
