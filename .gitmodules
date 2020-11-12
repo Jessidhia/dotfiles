@@ -33,6 +33,6 @@
 [submodule "submodules/ubuntu-wsl2-systemd-script"]
 	path = submodules/ubuntu-wsl2-systemd-script
 	url = https://github.com/DamionGans/ubuntu-wsl2-systemd-script
-[submodule "submodules/tpm"]
-	path = home/.config/tmux/plugins/tpm
+[submodule "dirs/tmux/plugins/tpm"]
+	path = dirs/tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
