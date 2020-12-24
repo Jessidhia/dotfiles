@@ -29,4 +29,6 @@ for arg in "$@"; do
   fi
 done
 
-exec mpv.com "${args[@]}"
+local mpv_bin=${commands[mpv.com]:-${commands[mpv.exe]}}
+
+exec "$mpv_bin" "${args[@]}"
