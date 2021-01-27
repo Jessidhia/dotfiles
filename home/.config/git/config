@@ -25,6 +25,7 @@
 	decorate = short
 [merge]
 	log = true
+	conflictStyle = diff3
 [push]
 	default = simple
 	followTags = true
