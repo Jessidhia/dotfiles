@@ -35,10 +35,9 @@ def get_ship_modules() -> dict:
     return data["profile"]["ship"]["modules"]
 
 
-def get_ship_stats():
+def get_ship_stats(data: dict):
     ships = get_ship_table()
     module_table = get_module_table_by_id()
-    data = get_cached_data()
 
     ship_name: str = data["profile"]["ship"]["name"]
     lower_name = ship_name.lower()
@@ -153,7 +152,13 @@ def get_ship_stats():
         if module_data["group_id"] == 124:
             gfsdb_bonus = gfsdb_bonus_table[module_data["class"]]
 
+    pad_size = pad_size_table.get(ship_name, None)
+    if not pad_size:
+        logging.warning(f"Unknown required pad size for f{ship_name}, assuming Large")
+        pad_size = "L"
+
     result = {
+        "pad_size": pad_size,
         "cargo_cap": cargo_cap,
         "laden_ly": round(
             jump_equation(
@@ -243,28 +248,60 @@ mass_table = {
 }
 
 reservoir_table = {
+    "Anaconda": 1.07,
+    "Cutter": 1.16,
+    "Federation_Corvette": 1.13,
     "Krait_Light": 0.63,
     "Type9": 0.77,
-    "Cutter": 1.16,
-    "Anaconda": 1.07,
-    "Federation_Corvette": 1.13,
+}
+
+# needs to list the pad size _and_ all larger sizes due to how tradedangerous works
+pad_size_table = {
+    "Adder": "SML?",
+    "Anaconda": "L",
+    "Cutter": "L",
+    "Federation_Corvette": "L",
+    "Krait_Light": "ML",
+    "Python": "ML",
+    "Type6": "ML",
+    "Type7": "L",
+    "Type9": "L",
 }
 
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Calculates ship data from trade-dangerous cache"
+        description="Extracts data from the trade-dangerous cAPI cache"
     )
     parser.add_argument("-v", "--verbose", action="store_true")
-    parser.add_argument("--stat", choices=["cargo_cap", "laden_ly", "unladen_ly"])
+    parser.add_argument("--cr", action="store_true")
+    parser.add_argument("--name", action="store_true")
+    parser.add_argument("--station", action="store_true")
+    parser.add_argument(
+        "--stat", choices=["all", "cargo_cap", "laden_ly", "unladen_ly", "pad_size"]
+    )
     args = parser.parse_args()
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
-    stats = get_ship_stats()
-    if args.stat:
-        print(stats[args.stat])
-    else:
+    data = get_cached_data()
+
+    if args.cr:
+        print(data["profile"]["commander"]["credits"])
+
+    if args.name:
+        print(data["profile"]["commander"]["name"])
+
+    if args.station:
+        docked = data["profile"]["commander"]["docked"]
+        system_name = data["profile"]["lastSystem"]["name"]
+        station_name = data["profile"]["lastStarport"]["name"]
+        print(system_name if not docked else f"{system_name}/{station_name}")
+
+    stats = get_ship_stats(data)
+    if args.stat == "all":
         for key, value in stats.items():
             print(f"{key}: {value}")
+    elif args.stat:
+        print(stats[args.stat])

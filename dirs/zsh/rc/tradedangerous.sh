@@ -17,8 +17,8 @@ export TD_PADS=
 
 # After a given number of hops, discard candidates that have scored less
 # than the given percentage of the best candidate.
-export TD_PRUNE_HOPS=3        # after 3 hops
-export TD_PRUNE_SCORE=20      # percentage
+export TD_PRUNE_HOPS=3   # after 3 hops
+export TD_PRUNE_SCORE=20 # percentage
 
 # Maximum number of jumps between hops
 export TD_JUMPS=6
@@ -45,22 +45,22 @@ tdbuyfrom() {
   #
   # Finds stations near <station> that are selling <item>
 
-  local near="$1"; shift 2>/dev/null
-  local prod="$1"; shift 2>/dev/null
-  if [[ -n $near && ( -z $prod || $prod == -* ) ]]; then
+  local near="$1"
+  shift 2>/dev/null
+  local prod="$1"
+  shift 2>/dev/null
+  if [[ -n $near && (-z $prod || $prod == -*) ]]; then
     # assume station was elided
     prod="$near"
-    near="$(.trade_get_station)"
+    near="$(.td_tool --station)"
     echo "NOTE: using ${near} as the origin"
   fi
 
-  if [[ 
-          -z $near || $near == -* ||
-          -z $prod || $prod == -* 
-          ]]
-  then
-      echo "ERROR: Usage: $0 [<station>] <item> ..."
-      return 1
+  if [[ -z \
+    $near || $near == -* || -z \
+    $prod || $prod == -* ]]; then
+    echo "ERROR: Usage: $0 [<station>] <item> ..."
+    return 1
   fi
 
   local cmd="trade buy -vv --near \"$near\" \"$prod\" $*"
@@ -73,22 +73,22 @@ tdsellto() {
   #
   # Finds stations near <station> that are buying <item>
 
-  local near="$1"; shift 2>/dev/null
-  local prod="$1"; shift 2>/dev/null
-  if [[ -n $near && ( -z $prod || $prod == -* ) ]]; then
+  local near="$1"
+  shift 2>/dev/null
+  local prod="$1"
+  shift 2>/dev/null
+  if [[ -n $near && (-z $prod || $prod == -*) ]]; then
     # assume station was elided
     prod="$near"
-    near="$(.trade_get_station)"
+    near="$(.td_tool --station)"
     echo "NOTE: using ${near} as the origin"
   fi
 
-  if [[ 
-          -z $near || $near == -* ||
-          -z $prod || $prod == -* 
-          ]]
-  then
-      echo "ERROR: Usage: $0 [<station>] <item> ..."
-      return 1
+  if [[ -z \
+    $near || $near == -* || -z \
+    $prod || $prod == -* ]]; then
+    echo "ERROR: Usage: $0 [<station>] <item> ..."
+    return 1
   fi
 
   local cmd="trade sell -vv --near \"$near\" \"$prod\" $*"
@@ -102,20 +102,21 @@ tdloc() {
   # Finds systems and their stations local to <place>
   # that are within <ly> range.
 
-  local place=$1; shift 2>/dev/null
-  local ly=$1; shift 2>/dev/null
-  
-  if [[ -n $place && ( -z $ly || $ly == -* ) ]]; then
+  local place=$1
+  shift 2>/dev/null
+  local ly=$1
+  shift 2>/dev/null
+
+  if [[ -n $place && (-z $ly || $ly == -*) ]]; then
     # assume station was elided
     ly="$place"
-    place="$(.trade_get_station)"
+    place="$(.td_tool --station)"
     echo "NOTE: using ${place} as the place"
   fi
-  
-  if [[ -z $place || $place == -* || -z $ly || $ly == -* ]]
-  then
-      echo "ERROR: Usage: $0 [<place>] <ly> ..."
-      return 1
+
+  if [[ -z $place || $place == -* || -z $ly || $ly == -* ]]; then
+    echo "ERROR: Usage: $0 [<place>] <ly> ..."
+    return 1
   fi
 
   local cmd="trade local \"$place\" --ly \"$ly\" $*"
@@ -128,17 +129,19 @@ tdnav() {
   #
   # Finds a route from one place to another.
 
-  local from=$1; shift 2>/dev/null
-  local to=$1; shift 2>/dev/null
+  local from=$1
+  shift 2>/dev/null
+  local to=$1
+  shift 2>/dev/null
 
-  if [[ -n $from && ( -z $to || $to == -* ) ]]; then
+  if [[ -n $from && (-z $to || $to == -*) ]]; then
     # assume "from" was elided
     to="$from"
-    from="$(.trade_get_station)"
+    from="$(.td_tool --station)"
     echo "NOTE: using ${from} as the origin"
   fi
 
-  local cmd="trade nav --ly ${TD_EMPTYLY:-$(ed_ship_range.py --stat unladen_ly)} \"$from\" \"$to\" $@"
+  local cmd="trade nav --ly ${TD_EMPTYLY:-$(.td_tool --stat unladen_ly)} \"$from\" \"$to\" $@"
   echo \$ $cmd
   eval "$cmd"
 }
@@ -148,25 +151,25 @@ tdrun() {
   #
   # Calculates a trade run from <place> using trade.py
 
-  origin="$1"; shift 2>/dev/null
-  if [[ -z $origin || $origin == -* ]]
-  then
-    origin="$(.trade_get_station)"
+  origin="$1"
+  shift 2>/dev/null
+  if [[ -z $origin || $origin == -* ]]; then
+    origin="$(.td_tool --station)"
     echo "NOTE: using ${origin} as the origin"
   fi
 
   local cmd=(trade run
-      --pad=$(.trade_get_padsize)
-      --ly=${TD_LADENLY:-$(ed_ship_range.py --stat laden_ly)}
-      --empty=${TD_EMPTYLY:-$(ed_ship_range.py --stat unladen_ly)}
-      --cap=${TD_CAP:-$(ed_ship_range.py --stat cargo_cap)}
-      --jumps=${TD_JUMPS}
-      --cr=$(.trade_get_cr_balance)
-      --prune-score=${TD_PRUNE_SCORE:-5}
-      --prune-hops=${TD_PRUNE_HOPS:-4}
-      --from="${(qq)origin}"
-      ${TD_RUN_ARGS[@]}
-      $@
+    --pad=$(.td_tool --stat pad_size)
+    --ly=${TD_LADENLY:-$(.td_tool --stat laden_ly)}
+    --empty=${TD_EMPTYLY:-$(.td_tool --stat unladen_ly)}
+    --cap=${TD_CAP:-$(.td_tool --stat cargo_cap)}
+    --jumps=${TD_JUMPS}
+    --cr=$(.td_tool --cr)
+    --prune-score=${TD_PRUNE_SCORE:-5}
+    --prune-hops=${TD_PRUNE_HOPS:-4}
+    --from="${(qq)origin}"
+    ${TD_RUN_ARGS[@]}
+    $@
   )
   echo \$ ${cmd[@]}
   eval "${cmd[@]}"
@@ -184,51 +187,18 @@ tdup() {
 
 .trade_update_edapi() {
   local maxAge="5" # minutes
-  if [[ -n "$(find "$TD_TMP"/tdh_profile.json -mmin +${maxAge})" ]]; then
-    local cmdr_name=$(.trade_get_cached_cmdr_name)
+  if [[ ! -f "$TD_TMP"/tdh_profile.json ]]; then
+    echo Updating commander data from cAPI >&2
+    .trade_force_update_edapi
+  elif [[ -n "$(find "$TD_TMP"/tdh_profile.json -mmin +${maxAge})" ]]; then
+    # NOTE: do not use .td_tool here, recursion trap
+    local cmdr_name=$(td_tool.py --name)
     cmdr_name=${cmdr_name:+CMDR $cmdr_name}
     echo Updating ${cmdr_name:-commander} data from cAPI >&2
     .trade_force_update_edapi
   fi
 }
 
-.trade_get_station() {
-  .trade_update_edapi
-  # parsing JSON with regexp? /o\
-  local docked="$(grep -Eo '"docked":true' "${TD_TMP}/tdh_profile.json")"
-  local lastSystem="$(grep -Eo '"lastSystem"[^}]+"name": *"[^"]+"' "${TD_TMP}/tdh_profile.json" | sed 's/^.*"name"://' | cut -d\" -f2)"
-  local lastStarport="$(grep -Eo '"lastStarport"[^}]+}[^}]+"name": *"[^"]+"' "${TD_TMP}/tdh_profile.json" | sed 's/^.*"name"://' | cut -d\" -f2)"
-  [[ -n "$docked" ]] && echo "$lastSystem/$lastStarport" || echo "$lastSystem"
-}
-
-.trade_get_padsize() {
-  .trade_update_edapi
-  local shipName="$(grep -Eo '"ship"[^}]+"name": *"[^"]+"' "${TD_TMP}/tdh_profile.json" | sed 's/^.*"name"://' | cut -d\" -f2)"
-  case $shipName in
-  Anaconda|Type7|Type9|Cutter)
-    echo L
-    ;;
-  Python|Type6|Krait_Light)
-    echo ML
-    ;;
-  Adder)
-    echo SML\?
-    ;;
-  *)
-    echo Unknown ship internal name \"${shipName}\", assuming Large pad required >&2
-    echo L
-  esac
-}
-
-.trade_get_cached_cmdr_name() {
-  grep -Eo '"commander"[^}]+"name": *"[^"]+"' "${TD_TMP}/tdh_profile.json" 2>/dev/null | sed 's/^.*"name"://' | cut -d\" -f2
-}
-
-.trade_get_cmdr_name() {
-  .trade_update_edapi && .trade_get_cached_cmdr_name
-}
-
-.trade_get_cr_balance() {
-  .trade_update_edapi
-  grep -Eo '"credits": *[0-9]+' "${TD_TMP}/tdh_profile.json" | sed 's/"credits": *//'
+.td_tool() {
+  .trade_update_edapi && td_tool.py "$@"
 }
