@@ -45,8 +45,8 @@ tdbuyfrom() {
   #
   # Finds stations near <station> that are selling <item>
 
-  local near="$1"; shift
-  local prod="$1"; shift
+  local near="$1"; shift 2>/dev/null
+  local prod="$1"; shift 2>/dev/null
   if [[ -n $near && ( -z $prod || $prod == -* ) ]]; then
     # assume station was elided
     prod="$near"
@@ -73,8 +73,8 @@ tdsellto() {
   #
   # Finds stations near <station> that are buying <item>
 
-  local near="$1"; shift
-  local prod="$1"; shift
+  local near="$1"; shift 2>/dev/null
+  local prod="$1"; shift 2>/dev/null
   if [[ -n $near && ( -z $prod || $prod == -* ) ]]; then
     # assume station was elided
     prod="$near"
@@ -102,8 +102,8 @@ tdloc() {
   # Finds systems and their stations local to <place>
   # that are within <ly> range.
 
-  local place=$1; shift
-  local ly=$1; shift
+  local place=$1; shift 2>/dev/null
+  local ly=$1; shift 2>/dev/null
   
   if [[ -n $place && ( -z $ly || $ly == -* ) ]]; then
     # assume station was elided
@@ -128,8 +128,8 @@ tdnav() {
   #
   # Finds a route from one place to another.
 
-  local from=$1; shift
-  local to=$1; shift
+  local from=$1; shift 2>/dev/null
+  local to=$1; shift 2>/dev/null
 
   if [[ -n $from && ( -z $to || $to == -* ) ]]; then
     # assume "from" was elided
@@ -148,7 +148,7 @@ tdrun() {
   #
   # Calculates a trade run from <place> using trade.py
 
-  origin="$1"; shift
+  origin="$1"; shift 2>/dev/null
   if [[ -z $origin || $origin == -* ]]
   then
     origin="$(.trade_get_station)"
@@ -164,7 +164,7 @@ tdrun() {
       --cr=$(.trade_get_cr_balance)
       --prune-score=${TD_PRUNE_SCORE:-5}
       --prune-hops=${TD_PRUNE_HOPS:-4}
-      --from="${origin}"
+      --from="${(qq)origin}"
       ${TD_RUN_ARGS[@]}
       $@
   )
