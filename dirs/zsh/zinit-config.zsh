@@ -50,4 +50,4 @@ function .zicompinit () {
 }
 zinit ice lucid wait \
     atinit='ZINIT[COMPINIT_OPTS]=-i; ZINIT[ZCOMPDUMP_PATH]="${ZDOTDIR:-$HOME}/.zsh/.${SHORT_HOST:-$HOST}-${ZSH_VERSION}.zcompdump"; .zicompinit; zpcdreplay; unset -f .zicompinit'
-zinit light zdharma/fast-syntax-highlighting
+zinit light z-shell/fast-syntax-highlighting
