@@ -3,31 +3,32 @@
 import json
 import os
 import logging
+from math import ceil
 from typing import Optional
 
 
 def get_cached_data() -> dict:
     td_tmp = os.environ.get("TD_TMP")
-    f = open(f"{td_tmp}/tdh_profile.json", "r")
-    return json.load(f)
+    with open(f"{td_tmp}/tdh_profile.json", "r") as f:
+        return json.load(f)
 
 
 def get_ship_table() -> dict:
     td_data = os.environ.get("TD_DATA")
-    f = open(f"{td_data}/eddb/index.json")
-    return json.load(f)["Ships"]
+    with open(f"{td_data}/eddb/index.json") as f:
+        return json.load(f)["Ships"]
 
 
 def get_module_table_by_id() -> dict:
     td_data = os.environ.get("TD_DATA")
-    f = open(f"{td_data}/eddb/modules.json")
-    module_list = json.load(f)
+    with open(f"{td_data}/eddb/modules.json") as f:
+        module_list = json.load(f)
 
-    table = {}
-    for module in module_list:
-        table[module["ed_id"]] = module
+        table = {}
+        for module in module_list:
+            table[module["ed_id"]] = module
 
-    return table
+        return table
 
 
 def get_ship_modules() -> dict:
@@ -39,10 +40,19 @@ def get_ship_stats(data: dict):
     ships = get_ship_table()
     module_table = get_module_table_by_id()
 
-    ship_name: str = data["profile"]["ship"]["name"]
+    ship_data = data["profile"]["ship"]
+    ship_name: str = ship_data["name"]
     lower_name = ship_name.lower()
     if lower_name == "krait_light":
         lower_name = "krait_phantom"
+    elif lower_name == "type9":
+        lower_name = "type_9_heavy"
+    elif lower_name == "cutter":
+        lower_name = "imperial_cutter"
+
+    if not lower_name in ships:
+        logging.error(f"Could not find {lower_name} in {[k for k in ships.keys()]}")
+
     hull_mass = ships[lower_name]["properties"]["hullMass"]
 
     reservoir_size = reservoir_table.get(ship_name, 0)
@@ -100,11 +110,15 @@ def get_ship_stats(data: dict):
         if module_mass == 0:
             # AFMU, cargo rack, fuel tank, scoop, planetary suite
             if (
-                module_data["group_id"] == 93
-                or module_data["group_id"] == 80
-                or module_data["group_id"] == 81
-                or module_data["group_id"] == 90
-                or module_data["group_id"] == 142
+                module_data["group_id"] == 93  # AFMU
+                or module_data["group_id"] == 80  # cargo rack
+                or module_data["group_id"] == 81  # fuel tank
+                or module_data["group_id"] == 90  # scoops
+                or module_data["group_id"] == 91  # refineries
+                or module_data["group_id"] == 138  # supercruise assist
+                or module_data["group_id"] == 139  # docking computer
+                or module_data["group_id"] == 102  # planetary suite
+                or module_data["group_id"] == 142  # planetary suite (Odyssey)
             ):
                 pass
             elif module_data["group_id"] == 50:
@@ -154,7 +168,7 @@ def get_ship_stats(data: dict):
 
     pad_size = pad_size_table.get(ship_name, None)
     if not pad_size:
-        logging.warning(f"Unknown required pad size for f{ship_name}, assuming Large")
+        logging.warning(f"Unknown required pad size for {ship_name}, assuming Large")
         pad_size = "L"
 
     result = {
@@ -181,6 +195,10 @@ def get_ship_stats(data: dict):
                 gfsdb_bonus,
             ),
             2,
+        ),
+        # note: hardcoded to regular user rebuy rate; some kickstarter backers have better rates
+        "rebuy": ceil(
+            (ship_data["value"]["total"] - ship_data["value"]["cargo"]) * 0.05
         ),
     }
 
@@ -240,6 +258,10 @@ gfsdb_bonus_table = {5: 10.5, 4: 9.25, 3: 7.75, 2: 6, 1: 4}
 
 mass_table = {
     "Int_DroneControl_Repair_Size3_Class2": 2,
+    "Hpt_Mining_SubSurfDispMisle_Turret_Medium": 4,
+    "Hpt_Mining_SeismChrgWarhd_Turret_Medium": 4,
+    "Hpt_Mining_AbrBlstr_Turret_Small": 2,
+    "Hpt_MRAScanner_Size0_Class5": 1.3,
     "Int_GuardianFSDBooster_Size1": 1.3,
     "Int_GuardianFSDBooster_Size2": 1.3,
     "Int_GuardianFSDBooster_Size3": 1.3,
@@ -247,11 +269,14 @@ mass_table = {
     "Int_GuardianFSDBooster_Size5": 1.3,
 }
 
+# extracted from https://github.com/taleden/EDSY/blob/master/eddb.js
 reservoir_table = {
     "Anaconda": 1.07,
     "Cutter": 1.16,
     "Federation_Corvette": 1.13,
     "Krait_Light": 0.63,
+    "Krait_MkII": 0.63,
+    "Python": 0.83,
     "Type9": 0.77,
 }
 
@@ -262,6 +287,7 @@ pad_size_table = {
     "Cutter": "L",
     "Federation_Corvette": "L",
     "Krait_Light": "ML",
+    "Krait_MkII": "ML",
     "Python": "ML",
     "Type6": "ML",
     "Type7": "L",
@@ -279,7 +305,8 @@ if __name__ == "__main__":
     parser.add_argument("--name", action="store_true")
     parser.add_argument("--station", action="store_true")
     parser.add_argument(
-        "--stat", choices=["all", "cargo_cap", "laden_ly", "unladen_ly", "pad_size"]
+        "--stat",
+        choices=["all", "cargo_cap", "laden_ly", "unladen_ly", "pad_size", "rebuy"],
     )
     args = parser.parse_args()
     if args.verbose:

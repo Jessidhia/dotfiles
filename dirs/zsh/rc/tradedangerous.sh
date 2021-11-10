@@ -17,17 +17,23 @@ export TD_PADS=
 
 # After a given number of hops, discard candidates that have scored less
 # than the given percentage of the best candidate.
-export TD_PRUNE_HOPS=3   # after 3 hops
+export TD_PRUNE_HOPS=2   # only after N hops
 export TD_PRUNE_SCORE=20 # percentage
 
 # Maximum number of jumps between hops
-export TD_JUMPS=6
+export TD_JUMPS=4
 
 # additional default arguments to give to tdrun
 export TD_RUN_ARGS=(
   -vv
+  --color
   --progress
   --fc=N
+  --avoid=slaves,tobacco
+  --age=30
+  --lsp=20
+  --ls-max 100000
+
 )
 
 # opens this file in vscode
@@ -49,8 +55,10 @@ tdbuyfrom() {
   shift 2>/dev/null
   local prod="$1"
   shift 2>/dev/null
+  local extra=()
   if [[ -n $near && (-z $prod || $prod == -*) ]]; then
     # assume station was elided
+    extra=($prod)
     prod="$near"
     near="$(.td_tool --station)"
     echo "NOTE: using ${near} as the origin"
@@ -63,7 +71,7 @@ tdbuyfrom() {
     return 1
   fi
 
-  local cmd="trade buy -vv --near \"$near\" \"$prod\" $*"
+  local cmd=(trade buy -vv -p \"$(.td_tool --stat pad_size)\" --near \"$near\" \"$prod\" $extra $@)
   echo \$ $cmd
   eval "$cmd"
 }
@@ -77,8 +85,10 @@ tdsellto() {
   shift 2>/dev/null
   local prod="$1"
   shift 2>/dev/null
+  local extra=()
   if [[ -n $near && (-z $prod || $prod == -*) ]]; then
     # assume station was elided
+    extra=($prod)
     prod="$near"
     near="$(.td_tool --station)"
     echo "NOTE: using ${near} as the origin"
@@ -91,7 +101,7 @@ tdsellto() {
     return 1
   fi
 
-  local cmd="trade sell -vv --near \"$near\" \"$prod\" $*"
+  local cmd=(trade sell -vv -p \"$(.td_tool --stat pad_size)\" --near \"$near\" \"$prod\" $extra $@)
   echo \$ $cmd
   eval "$cmd"
 }
@@ -149,34 +159,62 @@ tdnav() {
 tdrun() {
   # Usage: tdrun [... trade.py options]
   #
-  # Calculates a trade run from <place> using trade.py
+  # Calculates a trade run for your current ship using trade.py
 
-  origin="$1"
+  local args=(
+    --pad=$(.td_tool --stat pad_size)
+    --ly=${TD_LADENLY:-$(.td_tool --stat laden_ly)}
+    --empty=${TD_EMPTYLY:-$(.td_tool --stat unladen_ly)}
+    --cap=${TD_CAP:-$(.td_tool --stat cargo_cap)}
+    --cr=$(.td_tool --cr)
+    --insurance=$(.td_tool --stat rebuy)
+    --prune-score=${TD_PRUNE_SCORE:-5}
+    --prune-hops=${TD_PRUNE_HOPS:-4}
+    --jumps=${TD_JUMPS}
+    "${TD_RUN_ARGS[@]}"
+    "$@"
+  )
+  echo \$ trade run "${args[@]}"
+  trade run "${args[@]}"
+  echo -ne '\a'
+}
+
+tdrunfrom() {
+  local origin="$1"
   shift 2>/dev/null
   if [[ -z $origin || $origin == -* ]]; then
     origin="$(.td_tool --station)"
     echo "NOTE: using ${origin} as the origin"
   fi
 
-  local cmd=(trade run
-    --pad=$(.td_tool --stat pad_size)
-    --ly=${TD_LADENLY:-$(.td_tool --stat laden_ly)}
-    --empty=${TD_EMPTYLY:-$(.td_tool --stat unladen_ly)}
-    --cap=${TD_CAP:-$(.td_tool --stat cargo_cap)}
-    --jumps=${TD_JUMPS}
-    --cr=$(.td_tool --cr)
-    --prune-score=${TD_PRUNE_SCORE:-5}
-    --prune-hops=${TD_PRUNE_HOPS:-4}
-    --from="${(qq)origin}"
-    ${TD_RUN_ARGS[@]}
-    $@
-  )
-  echo \$ ${cmd[@]}
-  eval "${cmd[@]}"
+  tdrun --from="$origin" "$@"
+}
+
+tdrunto() {
+  local dest="$1"
+  shift 2>/dev/null
+  if [[ -z $dest || $dest == -* ]]; then
+    dest="$(.td_tool --station)"
+    echo "NOTE: using ${dest} as the origin"
+  fi
+
+  tdrun --to="$dest" "$@"
+}
+
+tdrunloop() {
+  local origin="$1"
+  shift 2>/dev/null
+  if [[ -z $origin || $origin == -* ]]; then
+    origin="$(.td_tool --station)"
+    echo "NOTE: using ${origin} as the origin"
+  fi
+
+  tdrun --from="$origin" --loop "$@"
 }
 
 tdup() {
-  trade import --plug=eddblink -O fallback
+  echo \$ trade import --plug=eddblink "$@"
+  trade import --plug=eddblink "$@"
 }
 
 ### custom internal functions
