@@ -1,7 +1,7 @@
 [submodule "zinit"]
 	path = submodules/zinit
-	url = https://github.com/zdharma/zinit
-	branch = master
+	url = https://github.com/z-shell/zinit
+	branch = main
 [submodule "rbenv"]
 	path = submodules/rbenv
 	url = https://github.com/rbenv/rbenv
