@@ -19,7 +19,8 @@ zinit ice lucid atclone='"${commands[dircolors]:-$commands[gdircolors]}" -b LS_C
     atpull='%atclone' pick='clrs.zsh' nocompile'!' \
     atload='zstyle '\'':completion:*'\'' list-colors "${(s.:.)LS_COLORS%:}"' \
     if='[[ -n "${commands[dircolors]:-$commands[gdircolors]}" ]]'
-zinit light trapd00r/LS_COLORS
+#zinit light trapd00r/LS_COLORS
+zinit light arcticicestudio/nord-dircolors
 
 zinit ice lucid wait blockf atpull='zinit creinstall -q .'
 zinit light zsh-users/zsh-completions
