@@ -10,10 +10,10 @@ zinit ice depth='1' as'null' nocd \
 zinit load robbyrussell/oh-my-zsh
 
 zinit ice as='completion' \
-  atclone="chmod +x ./rustup-init.sh && ./rustup-init.sh -v -y --default-toolchain none && ${(q)USERPROFILE:-$HOME}/.cargo/bin/rustup completions zsh > ./_rustup" \
+  atclone="chmod +x ./rustup-init.sh && ./rustup-init.sh -v -y --no-modify-path --default-toolchain none && ${(q)USERPROFILE:-$HOME}/.cargo/bin/rustup completions zsh > ./_rustup" \
   atpull='%atclone' \
   atload='if [[ -f "$HOME/.cargo/env" ]]; then source "$HOME/.cargo/env"; fi'
-zinit snippet 'https://github.com/rust-lang/rustup/blob/master/rustup-init.sh'
+zinit snippet 'https://static.rust-lang.org/rustup/rustup-init.sh'
 
 zinit ice lucid atclone='"${commands[dircolors]:-$commands[gdircolors]}" -b LS_COLORS > clrs.zsh' \
     atpull='%atclone' pick='clrs.zsh' nocompile'!' \
