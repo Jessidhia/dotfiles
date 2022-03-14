@@ -17,20 +17,32 @@ function command_not_found_handler () {
 
   print -Pn '%1F. . . . .%f\r'
 
-  if [[ -n $commands[npx] ]]; then
-    if [[ $1 != *@* ]]; then
-      # hmm... this is kinda the same as having node_modules/.bin at the end of $PATH, but fancier?
-      npx --no-install --quiet -- "$@"
-      local ret=$?
+  local skip_echo
 
-      if [[ $ret != 127 ]]; then
-        # assume that only npx gets to return 127 (if package not already installed)
-        return $ret
-      fi
-    else
-      npx -- "$@"
-      return $?
+  if [[ -x /usr/libexec/pk-command-not-found ]]; then
+    # ported from /etc/profile.d/PackageKit.sh, since we're overriding it
+    if [[ $- == *"i"* ]] &&
+        [[ -S /run/dbus/system_bus_socket ]] &&
+        [[ -x /usr/libexec/packagekitd ]] &&
+        # this is a bash-completion check; does it work on zsh?
+        [[ -z ${COMP_CWORD-} ]]; then
+
+       # pk-command-not-found already prints a bash-style "command-not-found" message
+       skip_echo=1
+
+       /usr/libexec/pk-command-not-found "$@"
+       local ret=$?
+       # if pk handled it and it's no longer "not found"
+       if [[ $ret != 127 ]]; then
+          return $ret
+       fi
     fi
+  fi
+
+  # only if the command includes a @ somewhere (e.g. foo@latest)
+  if [[ -n $commands[npx] ]] && [[ $1 = *@* ]]; then
+    npx -- "$@"
+    return $?
   fi
 
   # TODO: just parse homebrew-command-not-found/executables.txt instead, `brew which-formula` is really slow
@@ -44,7 +56,7 @@ function command_not_found_handler () {
   fi
 
   # Zsh skips printing this on >=5.3
-  is-at-least 5.3 && echo "zsh: command not found: $1" >&2
+  [[ -z $skip_echo ]] && is-at-least 5.3 && echo "zsh: command not found: $1" >&2
 
   return 127
 }
