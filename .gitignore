@@ -2,5 +2,6 @@
 /dirs/zsh/.zcompdump*
 /dirs/zsh/*.zcompdump
 /dirs/tmux/plugins
+.uuid
 *.zwc
 *.zwc.old
