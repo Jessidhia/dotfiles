@@ -1,0 +1,4 @@
+Folder to place things to be installed to ~/Library on MacOS
+
+Installation cannot be done automatically by homeshick and
+must be done by zsh/rc/macos.sh
