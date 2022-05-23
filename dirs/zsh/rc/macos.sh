@@ -10,7 +10,9 @@ if [[ "$OSTYPE" = darwin* ]]; then
             local folder_name="$1"
 
             install -d "$HOME"/Library/"$folder_name"
-            install -Cp "$Library"/"$folder_name"/* "$HOME"/Library/"$folder_name"
+            pushd "$HOME"/Library/"$folder_name" &>/dev/null
+            ln -s ../../.homesick/repos/dotfiles/dirs/Library/"$folder_name"/* "$HOME"/Library/"$folder_name"/ &>/dev/null
+            popd &>/dev/null
         }
 
         .library_install KeyBindings
