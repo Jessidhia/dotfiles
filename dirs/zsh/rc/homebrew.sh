@@ -1,0 +1,3 @@
+export \
+  HOMEBREW_NO_ENV_HINTS=1 \
+  HOMEBREW_PRY=1
