@@ -1,6 +1,6 @@
-[submodule "zinit"]
-	path = submodules/zinit
-	url = https://github.com/z-shell/zinit
+[submodule "submodules/zi"]
+	path = submodules/zi
+	url = https://github.com/z-shell/zi
 	branch = main
 [submodule "rbenv"]
 	path = submodules/rbenv

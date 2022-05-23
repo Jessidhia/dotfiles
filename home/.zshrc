@@ -9,14 +9,20 @@ fi
 
 for rc in $HOME/.zsh/pre/*.(|z)sh; do . "$rc"; done
 
-. "$HOME/.zinit/bin/zinit.zsh"
-. "$HOME/.zsh/zinit-config.zsh"
+. "$HOME/.zi/bin/zi.zsh"
+autoload -Uz _zi; (( ${+_comps} )) && _comps[zi]=_zi
+if [[ -f "${ZI[ZMODULES_DIR]}/zpmod/Src/zi/zpmod.so" ]]; then
+  module_path+=( "${ZI[ZMODULES_DIR]}/zpmod/Src" )
+  zmodload zi/zpmod &>/dev/null
+fi
+
+. "$HOME/.zsh/zi-config.zsh"
 
 for rc in $HOME/.zsh/rc/*.(|z)sh; do . "$rc"; done
 
 if [[ "$do_burst" = true ]]; then
     unset do_burst
-    @zinit-scheduler burst || true
+    @zi-scheduler burst || true
 fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
