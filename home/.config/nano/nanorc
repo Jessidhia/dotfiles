@@ -1,0 +1,20 @@
+set autoindent
+set cutfromcursor
+set indicator
+set positionlog
+set regexp
+set smarthome
+set tabsize 4
+set tabstospaces
+
+# nano prints warnings if a folder doesn't exist and doesn't have a var with its install dir
+# must manually comment/uncomment the appropriate dirs :(
+#include "/usr/share/nano/*.nanorc"
+#include "/usr/share/nano/extra/*.nanorc"
+include "/usr/local/share/nano/*.nanorc"
+include "/usr/local/share/nano/extra/*.nanorc"
+
+# BUG: comment out nanorc.nanorc:26 (icolor brightnormal " brightnormal") to fix warning
+include "~/.config/nano/nanorc_extra/*.nanorc"
+
+extendsyntax Makefile tabgives "	"
