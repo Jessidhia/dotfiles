@@ -2,6 +2,10 @@ if [[ "$OSTYPE" = darwin* ]]; then
     export PKG_CONFIG_LIBDIR="/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig:/usr/lib/pkgconfig"
     #export SSL_CERT_FILE="/usr/local/etc/openssl/ca-bundle.crt"
 
+    if [[ -S "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]]; then
+        export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+    fi
+
     if [[ -d "$HOME"/.homesick/repos/dotfiles ]]; then
         # manually install files from dirs/Library
         # homeshick can't manage them well, at least not without polutting non-macos homes
