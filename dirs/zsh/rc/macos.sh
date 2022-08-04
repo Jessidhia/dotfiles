@@ -1,5 +1,9 @@
 if [[ "$OSTYPE" = darwin* ]]; then
-    export PKG_CONFIG_LIBDIR="/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig:/usr/lib/pkgconfig"
+    if [[ -d /usr/local/opt/python3/libexec/bin ]]; then
+        export PATH="/usr/local/opt/python3/libexec/bin:$PATH"
+    fi
+    export PKG_CONFIG_LIBDIR="/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig/:/opt/X11/lib/pkgconfig:/usr/lib/pkgconfig"
+    export PKG_CONFIG_PATH="/usr/local/opt/expat/lib/pkgconfig:/usr/local/opt/zlib/lib/pkgconfig"
     #export SSL_CERT_FILE="/usr/local/etc/openssl/ca-bundle.crt"
 
     if [[ -S "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]]; then

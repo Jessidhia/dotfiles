@@ -21,15 +21,17 @@ fi
 for rc in $HOME/.zsh/rc/*.(|z)sh; do . "$rc"; done
 
 if [[ "$do_burst" = true ]]; then
-    unset do_burst
-    @zi-scheduler burst || true
+  unset do_burst
+  @zi-scheduler burst || true
 fi
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+if [[ $THEME = p10k ]]; then
+  # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-typeset -g PS2="%F{$POWERLEVEL9K_BACKGROUND}${(g::)POWERLEVEL9K_LEFT_PROMPT_FIRST_SEGMENT_START_SYMBOL}%f%K{$POWERLEVEL9K_BACKGROUND}%F{255} %_ %k%F{$POWERLEVEL9K_BACKGROUND}${(g::)POWERLEVEL9K_LEFT_PROMPT_LAST_SEGMENT_END_SYMBOL}%f "
-typeset -g PS3="%F{$POWERLEVEL9K_BACKGROUND}${(g::)POWERLEVEL9K_LEFT_PROMPT_LAST_SEGMENT_END_SYMBOL}%f "
+  typeset -g PS2="%F{$POWERLEVEL9K_BACKGROUND}${(g::)POWERLEVEL9K_LEFT_PROMPT_FIRST_SEGMENT_START_SYMBOL}%f%K{$POWERLEVEL9K_BACKGROUND}%F{255} %_ %k%F{$POWERLEVEL9K_BACKGROUND}${(g::)POWERLEVEL9K_LEFT_PROMPT_LAST_SEGMENT_END_SYMBOL}%f "
+  typeset -g PS3="%F{$POWERLEVEL9K_BACKGROUND}${(g::)POWERLEVEL9K_LEFT_PROMPT_LAST_SEGMENT_END_SYMBOL}%f "
+fi
 
 autoload -U zrecompile
 function .zrecompile () {
