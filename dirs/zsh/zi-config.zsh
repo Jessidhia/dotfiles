@@ -1,5 +1,11 @@
-zi ice depth=1 nocd
+zi ice depth=1 nocd if='[[ $THEME = p10k && ( ${TERM##*-} = 256color || ${terminfo[colors]:?} -ge 256 ) ]]'
 zi light romkatv/powerlevel10k
+
+zi ice as"command" from"gh-r" \
+  atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+  atpull"%atclone" src"init.zsh" \
+  if='[[ $THEME = starship && ( ${TERM##*-} = 256color || ${terminfo[colors]:?} -ge 256 ) ]]'
+zi light starship/starship
 
 # load earliest (but after p10k) to avoid it clobbering things set by other plugins
 COMPLETION_WAITING_DOTS=true
