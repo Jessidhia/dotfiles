@@ -78,3 +78,5 @@
 	path = ./local
 [hub]
 	protocol = https
+[submodule]
+	recurse = true
