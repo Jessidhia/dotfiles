@@ -1,4 +1,4 @@
-zi ice depth=1 nocd if='[[ $THEME = p10k && ( ${TERM##*-} = 256color || ${terminfo[colors]:?} -ge 256 ) ]]'
+zi ice depth=1 nocd if='[[ $THEME = p10k && ( ${TERM##*-} = 256color || ${#terminfo} -gt 0 && ${terminfo[colors]:?} -ge 256 ) ]]'
 zi light romkatv/powerlevel10k
 
 zi ice as"command" from"gh-r" \
