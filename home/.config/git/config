@@ -23,7 +23,7 @@
 	autocorrect = 5
 [log]
 	decorate = short
-	showSignature = true
+#	showSignature = true
 [merge]
 	log = true
 	conflictStyle = diff3
