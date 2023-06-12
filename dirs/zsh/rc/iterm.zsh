@@ -15,7 +15,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 if [[ -o interactive ]]; then
-  if [ "${ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX-}""$TERM" != "screen" -a "${ITERM_SHELL_INTEGRATION_INSTALLED-}" = "" -a "$TERM" != linux -a "$TERM" != dumb ]; then
+  if [[ "${ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX-}""$TERM" != "tmux-256color" &&
+    "${ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX-}""$TERM" != "screen" &&
+    "${ITERM_SHELL_INTEGRATION_INSTALLED-}" = "" &&
+    "$TERM" != linux && "$TERM" != dumb ]]; then
     ITERM_SHELL_INTEGRATION_INSTALLED=Yes
     ITERM2_SHOULD_DECORATE_PROMPT="1"
     # Indicates start of command output. Runs just before command executes.
@@ -130,10 +133,10 @@ if [[ -o interactive ]]; then
 
     iterm2_precmd() {
       local STATUS="$?"
-      if [ -z "${ITERM2_SHOULD_DECORATE_PROMPT-}" ]; then
+      if [[ -z "${ITERM2_SHOULD_DECORATE_PROMPT-}" ]]; then
         # You pressed ^C while entering a command (iterm2_preexec did not run)
         iterm2_before_cmd_executes
-        if [ "$PS1" != "${ITERM2_DECORATED_PS1-}" ]; then
+        if [[ "$PS1" != "${ITERM2_DECORATED_PS1-}" ]]; then
           # PS1 changed, perhaps in another precmd. See issue 9938.
           ITERM2_SHOULD_DECORATE_PROMPT="1"
         fi
@@ -141,7 +144,7 @@ if [[ -o interactive ]]; then
 
       iterm2_after_cmd_executes "$STATUS"
 
-      if [ -n "$ITERM2_SHOULD_DECORATE_PROMPT" ]; then
+      if [[ -n "$ITERM2_SHOULD_DECORATE_PROMPT" ]]; then
         iterm2_decorate_prompt
       fi
     }
@@ -160,10 +163,10 @@ if [[ -o interactive ]]; then
     # to a VPN.
     if [ -z "${iterm2_hostname-}" ]; then
       if [ "$(uname)" != "Darwin" ]; then
-        iterm2_hostname=$(hostname -f 2>/dev/null)
+        iterm2_hostname="$(hostname -f 2>/dev/null)"
         # Some flavors of BSD (i.e. NetBSD and OpenBSD) don't have the -f option.
         if [ $? -ne 0 ]; then
-          iterm2_hostname=$(hostname)
+          iterm2_hostname="$(hostname)"
         fi
       fi
     fi
@@ -175,6 +178,6 @@ if [[ -o interactive ]]; then
     preexec_functions=($preexec_functions iterm2_preexec)
 
     iterm2_print_state_data
-    printf "\033]1337;ShellIntegrationVersion=13;shell=zsh\007"
+    printf "\033]1337;ShellIntegrationVersion=14;shell=zsh\007"
   fi
 fi
