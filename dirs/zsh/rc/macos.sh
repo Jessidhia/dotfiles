@@ -2,8 +2,8 @@ if [[ "$OSTYPE" = darwin* ]]; then
     if [[ -d /usr/local/opt/python3/libexec/bin ]]; then
         export PATH="/usr/local/opt/python3/libexec/bin:$PATH"
     fi
-    export PKG_CONFIG_LIBDIR="/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig/:/opt/X11/lib/pkgconfig:/usr/lib/pkgconfig"
-    export PKG_CONFIG_PATH="/usr/local/opt/expat/lib/pkgconfig:/usr/local/opt/zlib/lib/pkgconfig"
+    export PKG_CONFIG_LIBDIR="/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/opt/X11/lib/pkgconfig:/usr/lib/pkgconfig"
+
     #export SSL_CERT_FILE="/usr/local/etc/openssl/ca-bundle.crt"
 
     if [[ -S "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]]; then
@@ -11,10 +11,20 @@ if [[ "$OSTYPE" = darwin* ]]; then
     fi
 
     if type brew &>/dev/null && [[ -n "$(brew --prefix)" ]]; then
-        if [[ -d "$(brew --prefix)/share/google-cloud-sdk" ]]; then
-            source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
-            source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
+        brew_prefix="$(brew --prefix)"
+        if [[ -d "$brew_prefix/share/google-cloud-sdk" ]]; then
+            source "$brew_prefix/share/google-cloud-sdk/path.zsh.inc"
+            source "$brew_prefix/share/google-cloud-sdk/completion.zsh.inc"
         fi
+
+        pkgconfig_lib_kegs=(jpeg libffi expat zlib)
+
+        export PKG_CONFIG_LIBDIR="$brew_prefix/lib/pkgconfig:$brew_prefix/share/pkgconfig${PKG_CONFIG_LIBDIR:+:}$PKG_CONFIG_LIBDIR"
+        for keg in $pkgconfig_lib_kegs; do
+            export PKG_CONFIG_PATH="$brew_prefix/opt/$keg/lib/pkgconfig${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+        done
+
+        unset brew_prefix pkgconfig_lib_kegs
     fi
 
     if [[ -d "$HOME"/.homesick/repos/dotfiles ]]; then
