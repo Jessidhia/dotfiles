@@ -12,11 +12,6 @@ if [[ "$OSTYPE" = darwin* ]]; then
 
     if type brew &>/dev/null && [[ -n "$(brew --prefix)" ]]; then
         brew_prefix="$(brew --prefix)"
-        if [[ -d "$brew_prefix/share/google-cloud-sdk" ]]; then
-            source "$brew_prefix/share/google-cloud-sdk/path.zsh.inc"
-            source "$brew_prefix/share/google-cloud-sdk/completion.zsh.inc"
-        fi
-
         pkgconfig_lib_kegs=(jpeg libffi expat zlib)
 
         export PKG_CONFIG_LIBDIR="$brew_prefix/lib/pkgconfig:$brew_prefix/share/pkgconfig${PKG_CONFIG_LIBDIR:+:}$PKG_CONFIG_LIBDIR"

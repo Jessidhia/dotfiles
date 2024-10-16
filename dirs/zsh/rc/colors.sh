@@ -23,6 +23,10 @@ fi
 # hardcoded preset from oh-my-zsh's theme-and-appearance.zsh
 export LSCOLORS="Gxfxcxdxbxegedabagacad"
 
+if eza --git-ignore -d . &>/dev/null; then
+    alias exa='eza'
+fi
+
 if exa --git-ignore -d . &>/dev/null; then
     alias ls='exa --icons --color-scale --group-directories-first -Fgh'
     alias tree='ls -T'
