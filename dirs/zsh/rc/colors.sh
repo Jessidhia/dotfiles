@@ -28,7 +28,7 @@ if eza --git-ignore -d . &>/dev/null; then
 fi
 
 if exa --git-ignore -d . &>/dev/null; then
-    alias ls='exa --icons --color-scale --group-directories-first -Fgh'
+    alias ls='exa --icons --color-scale --group-directories-first -ghF'
     alias tree='ls -T'
     alias lsg='ls --git --git-ignore'
 elif lsd --icon-theme=fancy -d . &>/dev/null; then
